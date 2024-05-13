@@ -1,0 +1,223 @@
+.sidebar {
+  background: var(--whiteColor);
+  box-shadow: 1px 0px 4px var(--greyText);
+  width: 18%;
+  height: 100%;
+  gap: 3rem;
+  overflow: auto;
+
+  .logoDiv {
+    padding: 1.5rem 1.5rem 0;
+    cursor: pointer;
+
+    .logo {
+      max-width: 50px;
+      margin-right: 0.5rem;
+      background: var(--inputColor);
+      border-radius: 100%;
+      padding: 0.2rem;
+    }
+
+    h2 {
+      font-size: var(--h2FontSize);
+      color: var(--primaryColor);
+    }
+  }
+
+  .menuDiv,
+  .settingsDiv {
+    .divTitle {
+      font-size: var(--h3FontSize);
+      color: var(--blackColor);
+      padding: 0 1.5rem 1.5rem;
+    }
+
+    .menuList {
+      .listItem {
+        padding: 0.2rem 1.5rem;
+        width: 100%;
+        position: relative;
+
+        &::before {
+          position: absolute;
+          content: "";
+          height: 0%;
+          width: 5px;
+          left: 0;
+          bottom: 0;
+          border-top-right-radius: 10px;
+          border-bottom-right-radius: 10px;
+          background: var(--primaryColor);
+          transition: 0.05s ease-out;
+        }
+
+        .menuLink {
+          color: var(--greyText);
+          font-weight: 500;
+          text-overflow: clip;
+
+          .icon {
+            margin-right: 0.5rem;
+          }
+        }
+
+        &:hover .menuLink {
+          color: var(--hoverColor);
+        }
+
+        &:hover::before {
+          height: 100%;
+          transition: 0.1s ease-in;
+        }
+      }
+    }
+  }
+
+  .sidebarCard {
+    width: 100%;
+    padding: 1rem;
+    text-align: center;
+    position: relative;
+
+    .icon {
+      cursor: default;
+      z-index: 9;
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background: var(--hoverColor);
+      border: 10px solid var(--whiteColor);
+      font-size: 3rem;
+      border-radius: 50%;
+      top: -8px;
+      right: 50%;
+      transform: translate(50%);
+    }
+
+    .cardContent {
+      position: relative;
+      padding: 1rem;
+      background: var(--hoverColor);
+      border-radius: 10px;
+      overflow: hidden;
+
+      h3 {
+        font-size: var(--h3FontSize);
+        margin-top: 1rem;
+        padding: 1rem 0;
+        font-weight: 300;
+        color: var(blackColor);
+      }
+
+      p {
+        font-size: var(--normalFontSize);
+        color: var(--textColor);
+        padding-bottom: 1rem;
+        font-weight: 500;
+      }
+
+      .btn {
+        position: relative;
+        color: var(--textColor);
+      }
+
+      .circle1,
+      .circle2 {
+        position: absolute;
+        background-color: var(--primarySecondColor);
+        border-radius: 50%;
+        opacity: 0.7;
+      }
+
+      .circle1 {
+        height: 100px;
+        width: 100px;
+        top: -50px;
+        left: -50px;
+      }
+
+      .circle2 {
+        height: 150px;
+        width: 150px;
+        bottom: -80px;
+        right: -70px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 990px) {
+  .sidebar {
+    .sidebarCard {
+      display: none !important;
+    }
+  }
+}
+
+@media screen and (max-width: 890px) {
+  .sidebar {
+    padding-bottom: 2rem;
+  }
+}
+
+@media screen and (max-width: 785px) {
+  .sidebar {
+    .logoDiv {
+      text-align: center;
+      margin: auto;
+      padding: 1.5rem 0.5rem 0;
+
+      img {
+        max-width: 50px;
+        margin: 0;
+        border-radius: 10px;
+        padding: 0.5rem;
+      }
+
+      h2 {
+        display: none;
+      }
+    }
+
+    .menuDiv,
+    .settingsDiv {
+      .divTitle,
+      .smallText {
+        display: none;
+      }
+
+      .menuList {
+        .listItem {
+          .menuLink {
+            justify-content: center;
+
+            .icon {
+              font-size: var(--h1FontSize);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 390px) {
+  .sidebar {
+    .menuDic,
+    .settingsDiv {
+      .menuList {
+        .listItem {
+          padding: 0.2rem 0.5rem;
+
+          .menuLink {
+            justify-content: center;
+
+            .icon {
+              font-size: var(--h1FontSize);
+            }
+          }
+        }
+      }
+    }
+  }
+}

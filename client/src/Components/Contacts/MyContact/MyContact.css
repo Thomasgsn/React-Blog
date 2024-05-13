@@ -1,0 +1,26 @@
+.myContactSection {
+  .heading {
+    h1 {
+      font-size: var(--h2FontSize);
+      color: var(--blackColor);
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      text-decoration: underline;
+    }
+  }
+
+  .secContainer {
+    .contact {
+      text-align: left;
+      width: 10rem;
+      margin-bottom: 1rem;
+      gap: 0.5rem;
+
+      &:hover {
+        h4 {
+          transform: translateX(3px);
+        }
+      }
+    }
+  }
+}
