@@ -5,7 +5,6 @@ import Axios from "axios";
 import { IconArrowRight, IconLock, IconUser } from "@tabler/icons-react";
 
 import "../User.css";
-import logo from "../../assets/media/logo.png";
 import axios from "axios";
 
 const Login = () => {
@@ -64,7 +63,7 @@ const Login = () => {
 
         <div className="formDiv flex">
           <div className="headerDiv">
-            <img src={logo} alt="Logo" />
+            <img src="media/logo.png" alt="Logo" />
             <h3>Welcome Back !</h3>
           </div>
 

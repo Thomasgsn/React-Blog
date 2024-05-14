@@ -4,7 +4,7 @@ import { UserInfo, SongReco } from "../../utils/type";
 
 import Top from "./Top/Top";
 import MyRecommendation from "./Recommendation/MyRecommendation";
-import Sidebar from "../assets/Sidebar/Sidebar";
+import Sidebar from "../assets/Topbar/Topbar";
 
 import "./Recommendation.css";
 

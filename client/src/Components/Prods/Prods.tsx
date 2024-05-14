@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import Top from "./Top/Top";
-import Sidebar from "../assets/Sidebar/Sidebar";
+import Sidebar from "../assets/Topbar/Topbar";
 import SelectedProds from "../assets/SelectedProds/SelectedProds";
 import Recommendation from "../assets/Recommendation/Recommendation";
 

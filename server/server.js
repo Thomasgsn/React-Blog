@@ -49,7 +49,7 @@ const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
-  database: "oftynprod",
+  database: "blog",
 });
 
 // TODO: Connection
@@ -124,12 +124,12 @@ app.get("/api/user/:id", (req, res) => {
 // page
 app.get("/home", (req, res) => {
   const SQLPlaylist =
-    "SELECT tb.id AS id, tb.name AS name, p.id AS prod_id, p.name AS prod_name, p.cover FROM typebeat tb JOIN prod p ON tb.id = p.idTb JOIN (SELECT idTb, MAX(releaseDate) AS maxReleaseDate FROM prod WHERE releaseDate IS NOT NULL GROUP BY idTb) latest_prod ON p.idTb = latest_prod.idTb AND p.releaseDate = latest_prod.maxReleaseDate WHERE p.releaseDate IS NOT NULL;";
+    "SELECT b.*, u.username FROM blog b INNER JOIN user u ON u.id = b.idUser;";
 
-  db.query(SQLPlaylist, (errPlaylist, dataPlaylist) => {
+  db.query(SQLPlaylist, (errPlaylist, blogs) => {
     if (errPlaylist) return res.json(errPlaylist);
 
-    return res.json(dataPlaylist);
+    return res.json(blogs);
   });
 });
 

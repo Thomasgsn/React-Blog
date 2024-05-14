@@ -1,7 +1,7 @@
 import { UserInfo } from "../../utils/type";
 
 import Top from "./Top/Top";
-import Sidebar from "../assets/Sidebar/Sidebar";
+import Sidebar from "../assets/Topbar/Topbar";
 
 import "./Payment.css";
 

@@ -1,19 +1,18 @@
 import { UserInfo } from "../../utils/type";
 import { useEffect, useState } from "react";
-import { Playlist, Prods } from '../../utils/type'
+import { Playlist, Prods } from "../../utils/type";
 
 import Top from "./Top/Top";
-import Sidebar from "../assets/Sidebar/Sidebar";
+import Sidebar from "../assets/Topbar/Topbar";
 import MyPlaylists from "./MyPlaylists/MyPlaylists";
 import Recommendation from "../assets/Recommendation/Recommendation";
 
 import "./Playlists.css";
 
-const Playlists = ({ userInfo }: {userInfo: UserInfo}) => {
-
+const Playlists = ({ userInfo }: { userInfo: UserInfo }) => {
   const [playlist, setPlaylist] = useState<Playlist[]>([]);
   const [playlistProd, setPlaylistProd] = useState<Prods[]>([]);
-  const [search, setSearch] = useState<string>('');
+  const [search, setSearch] = useState<string>("");
 
   useEffect(() => {
     fetch(`http://localhost:8081/playlists?searchBy=${search}`)
@@ -25,17 +24,17 @@ const Playlists = ({ userInfo }: {userInfo: UserInfo}) => {
       .catch((error) =>
         console.error("Erreur lors de la récupération des données :", error)
       );
-  }, [search]);  
+  }, [search]);
   return (
     <div className="homePage flex">
       <div className="container">
-        <Sidebar {...{userInfo}} />
+        <Sidebar {...{ userInfo }} />
         <div className="mainContent">
-          <Top {...{ search, setSearch, userInfo }}/>
+          <Top {...{ search, setSearch, userInfo }} />
           <div className="bottom flex">
             <MyPlaylists {...{ playlist, playlistProd }} />
           </div>
-      <Recommendation />
+          <Recommendation />
         </div>
       </div>
     </div>

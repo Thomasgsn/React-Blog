@@ -1,6 +1,6 @@
 import Top from "./Top/Top";
 
-import Sidebar from "../assets/Sidebar/Sidebar";
+import Sidebar from "../assets/Topbar/Topbar";
 
 import "./AboutMe.css";
 
@@ -11,8 +11,7 @@ const AboutMe = ({ userInfo }) => {
         <Sidebar {...{ userInfo }} />
         <div className="mainContent">
           <Top {...{ userInfo }} />
-          <div className="bottom flex">
-          </div>
+          <div className="bottom flex"></div>
         </div>
       </div>
     </div>

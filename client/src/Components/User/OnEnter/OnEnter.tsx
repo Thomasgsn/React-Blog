@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { IconUserPlus, IconUser } from "@tabler/icons-react";
 
 import "../User.css";
-import logo from "../../assets/media/logo.png";
 
 const OnEnter = () => {
   return (
@@ -27,7 +26,7 @@ const OnEnter = () => {
 
         <div className="enterDiv flex">
           <div className="headerDiv">
-            <img src={logo} alt="Logo" />
+            <img src="media/logo.png" alt="Logo" />
             <h3>Welcome Back !</h3>
           </div>
 

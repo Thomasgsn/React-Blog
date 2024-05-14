@@ -10,10 +10,8 @@ import {
 } from "@tabler/icons-react";
 
 import "../User.css";
-import logo from "../../assets/media/logo.png";
 
 const Register = () => {
-
   const navigateTo = useNavigate();
 
   const [mail, setMail] = useState("");
@@ -42,7 +40,6 @@ const Register = () => {
     <div className="registerPage flex">
       <div className="container flex">
         <div className="videoDiv">
-
           <div className="textDiv">
             <h2 className="title">Find the best production for your needs</h2>
             <p>Free & low price prods !</p>
@@ -58,7 +55,7 @@ const Register = () => {
 
         <div className="formDiv flex">
           <div className="headerDiv">
-            <img src={logo} alt="Logo" />
+            <img src="logo.png" alt="Logo" />
             <h3>Welcome !</h3>
           </div>
 

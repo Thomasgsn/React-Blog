@@ -3,12 +3,11 @@ import { UserInfo, Prods } from "../../utils/type";
 import { useParams } from "react-router-dom";
 
 import Top from "./Top/Top";
-import Sidebar from "../assets/Sidebar/Sidebar";
+import Sidebar from "../assets/Topbar/Topbar";
 import SelectedProds from "../assets/SelectedProds/SelectedProds";
 import Recommendation from "../assets/Recommendation/Recommendation";
 
 import "./Playlist.css";
-
 
 const Playlist = ({ userInfo }: { userInfo: UserInfo }) => {
   const { playlistName } = useParams<string>();
@@ -20,7 +19,9 @@ const Playlist = ({ userInfo }: { userInfo: UserInfo }) => {
   const [maxPrice, setMaxPrice] = useState<number>(100);
 
   useEffect(() => {
-    fetch(`http://localhost:8081/playlist/${playlistName}?filterBy=${filter}&searchBy=${search}&priceRange=${minPrice}-${maxPrice}`)
+    fetch(
+      `http://localhost:8081/playlist/${playlistName}?filterBy=${filter}&searchBy=${search}&priceRange=${minPrice}-${maxPrice}`
+    )
       .then((response) => response.json())
       .then((playlistProd) => {
         setProds(playlistProd);
@@ -30,13 +31,13 @@ const Playlist = ({ userInfo }: { userInfo: UserInfo }) => {
       );
   }, [filter, maxPrice, minPrice, playlistName, search]);
 
-
   return (
     <div className="homePage flex">
       <div className="container">
-        <Sidebar {...{userInfo}} />
+        <Sidebar {...{ userInfo }} />
         <div className="mainContent">
-          <Top {...{
+          <Top
+            {...{
               search,
               setSearch,
               filter,
@@ -46,7 +47,8 @@ const Playlist = ({ userInfo }: { userInfo: UserInfo }) => {
               setMinPrice,
               setMaxPrice,
               userInfo,
-            }} />
+            }}
+          />
           <div className="bottom flex">
             <SelectedProds {...{ playlistName, prods }} />
           </div>

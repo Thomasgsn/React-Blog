@@ -2,7 +2,7 @@ import { UserInfo } from "../../utils/type";
 
 import Top from "./Top/Top";
 import MyContact from "./MyContact/MyContact";
-import Sidebar from "../assets/Sidebar/Sidebar";
+import Sidebar from "../assets/Topbar/Topbar";
 
 import "./Contacts.css";
 

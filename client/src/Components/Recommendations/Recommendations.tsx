@@ -3,11 +3,11 @@ import { UserInfo } from "../../utils/type";
 
 import Top from "./Top/Top";
 import MyRecommendation from "./MyRecommendation/MyRecommendation";
-import Sidebar from "../assets/Sidebar/Sidebar";
+import Sidebar from "../assets/Topbar/Topbar";
 
 import "./Recommendations.css";
 
-const Recommendation = ({ userInfo } : {userInfo: UserInfo}) => {
+const Recommendation = ({ userInfo }: { userInfo: UserInfo }) => {
   const [artistReco, setArtistReco] = useState([]);
 
   const [filter, setFilter] = useState("date");
@@ -29,7 +29,7 @@ const Recommendation = ({ userInfo } : {userInfo: UserInfo}) => {
   return (
     <div className="homePage flex">
       <div className="container">
-        <Sidebar {...{userInfo}} />
+        <Sidebar {...{ userInfo }} />
         <div className="mainContent">
           <Top
             {...{

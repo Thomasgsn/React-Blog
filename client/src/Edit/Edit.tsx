@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import Sidebar from "../Components/assets/Sidebar/Sidebar";
+import Sidebar from "../Components/assets/Topbar/Topbar";
 import { IconArrowLeft } from "@tabler/icons-react";
 
 import EditPlaylist from "./Section/Playlist/Playlist";

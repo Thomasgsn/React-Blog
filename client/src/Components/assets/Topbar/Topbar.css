@@ -41,6 +41,24 @@
       justify-content: center;
       height: 3vw;
       width: 5vw;
+
+      &::before {
+        position: absolute;
+        content: "";
+        width: 0%;
+        height: 5px;
+        bottom: 0;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        background: var(--primaryColor);
+        transition: 0.05s ease-out;
+        border-radius: 1rem 1rem 0 0 ;
+      }
+
+      &:hover::before {
+        width: 64px;
+        transition: 0.1s ease-in;
+      }
     }
 
     .adminMenu {
@@ -71,7 +89,7 @@
       font-weight: 450;
       cursor: pointer;
     }
-    
+
     .avatar {
       background: var(--hoverColor);
       width: 2.5rem;

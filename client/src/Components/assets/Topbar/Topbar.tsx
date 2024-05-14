@@ -13,7 +13,7 @@ interface userInfo {
   role: string;
 }
 
-import "./Sidebar.css";
+import "./Topbar.css";
 
 const Topbar = ({ userInfo }: { userInfo: userInfo }) => {
   const [search, setSearch] = useState<string>("");

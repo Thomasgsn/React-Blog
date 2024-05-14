@@ -13,10 +13,6 @@
   font-family: "Montserrat", sans-serif;
 }
 
-body {
-  overflow: hidden;
-}
-
 .flex {
   display: flex;
   align-items: center;

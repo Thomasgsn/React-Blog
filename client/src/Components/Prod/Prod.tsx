@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import Top from "./Top/Top";
 import MyProd from "./MyProd/MyProd";
-import Sidebar from "../assets/Sidebar/Sidebar";
+import Sidebar from "../assets/Topbar/Topbar";
 
 import "./Prod.css";
 

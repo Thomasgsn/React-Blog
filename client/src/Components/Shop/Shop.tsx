@@ -3,13 +3,12 @@ import { useNavigate } from "react-router-dom";
 
 import Top from "./Top/Top";
 import Bento from "./Bento/Bento";
-import Sidebar from "../assets/Sidebar/Sidebar";
+import Sidebar from "../assets/Topbar/Topbar";
 import Recommendation from "../assets/Recommendation/Recommendation";
 
 import "./Shop.css";
 
 import { UserInfo, Prods, Playlist } from "../../utils/type";
-
 
 const Shop = ({ userInfo }: { userInfo: UserInfo }) => {
   const navigateTo = useNavigate();
