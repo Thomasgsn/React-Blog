@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : lun. 13 mai 2024 à 21:23
+-- Généré le : jeu. 16 mai 2024 à 20:25
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -29,73 +29,73 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `blog` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `text` text NOT NULL,
   `idUser` int(11) UNSIGNED NOT NULL,
   `tag` varchar(255) NOT NULL COMMENT 'séparé par des ''; ''',
-  `releaseDate` date DEFAULT NULL,
-  `idCategorie` int(11) NOT NULL
+  `releaseDate` datetime DEFAULT NULL,
+  `idCategory` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf16 COLLATE=utf16_general_ci;
 
 --
 -- Déchargement des données de la table `blog`
 --
 
-INSERT INTO `blog` (`id`, `name`, `idUser`, `tag`, `releaseDate`, `idCategorie`) VALUES
-(1, 'ZZz', 0, 'J9ueve; Favé; Plug; Pluggnb;', '2022-07-25', 5),
-(2, 'GOVA', 0, 'Maes; Boom Bap; Kick; Old School;', '2022-07-26', 3),
-(3, 'SILENT', 0, 'Trap; Freeze Corleone; KPRI;', '2022-07-29', 1),
-(4, 'WHAT ELSE', 0, 'Khali; Josman; New Wave; Trap;', '2022-08-03', 1),
-(5, 'WANTED', 0, 'La Fève; Khali; Kosei; New Wave; Trap;', '2022-08-25', 1),
-(6, 'MPC', 0, 'Luv Resval; Boom Bap;', '2022-08-19', 3),
-(7, 'Dior', 0, 'La Fève; Khali; Kosei; New Wave; Trap;', '2022-08-26', 1),
-(8, 'Come On', 0, 'Khali; Kosei; New Wave; Trap;', '2022-08-26', 1),
-(9, 'DÉNI', 0, 'Luv Resval; So La Lune; New Wave; Trap; Piano;', '2022-08-31', 1),
-(10, '888', 0, '8ruki; thaHomey; khali; Plug; Pluggnb;', '2022-09-15', 5),
-(11, 'WALL', 0, 'Luv Resval; So La Lune; Joysad; Trap; Piano;', '2022-10-01', 1),
-(12, 'J4D', 0, '8ruki; thaHomey; khali; Favé; Kosei; Plug; Pluggnb;', '2022-10-14', 5),
-(13, 'ZEME', 0, 'Menace Santana; Ziak; Gazo; Piano;', '2022-10-29', 2),
-(14, 'PIQUANT', 0, 'Menace Santana; Ziak; Halloween; Guitar;', '2022-10-31', 2),
-(15, 'SP!DER', 0, 'La Fève; Khali; Kosei; New Wave; Trap;', '2022-08-25', 1),
-(16, 'MER', 0, 'So La Lune; Joysad; Trap; Piano;', '2022-11-20', 1),
-(17, 'CARNAGE', 0, 'Kerchak; Ziak; Halloween; Jersey;', '2022-10-26', 2),
-(18, 'FAUT PROMETTRE', 0, 'Khali; Kosei; New Wave; Trap;', '2022-12-01', 1),
-(19, 'FRÉNÉSIE', 0, 'Khali; La Fève; Luther; NeS; Rounhaa; New Wave;', '2023-01-05', 1),
-(20, 'PAS TANT BESOIN DE TOI', 0, 'Khali; Kosei; New Wave;', '2023-01-17', 1),
-(21, 'RYUK', 0, 'Ziak; Halloween; Lewnwv;', '2023-02-06', 2),
-(22, 'ERRXR', 0, '404Billy; Benjamin Epps; Boom Bap; Dark;', '2023-02-10', 4),
-(23, 'STOPPED LINE', 0, '404Billy; Benjamin Epps; Boom Bap; Dark;', '2023-02-16', 4),
-(24, 'PASSIONNÉ', 0, 'Sneazzy; Lefa; New Wave; Lead;', '2023-02-20', 1),
-(25, 'STOP LUV', 0, 'AAMO; Leo SVR; New Wave;', '2023-07-16', 6),
-(26, 'CLIPPER', 0, 'AAMO; Leo SVR; New Wave;', '2023-10-31', 6),
-(27, 'mr. Business', 0, 'Benjamin Epps; 404Billy; Boom Bap; Dark;', '2023-11-09', 4),
-(28, 'LA LUNA', 0, 'AAMO; Leo SVR; New Wave;', '2023-11-26', 6),
-(29, 'ZEEN', 0, 'Jolagreen23; Khali; Kosei; New Wave;', '2023-12-09', 1),
-(30, 'RORY', 0, 'AAMO; Leo SVR; New Wave;', '2023-12-21', 6),
-(31, 'LE TEMPS PASSE', 0, 'Khali; Kosei; New Wave;', '2023-12-28', 1),
-(32, 'CONCEPT', 0, 'gapman; trap; guitar; dark;', '2024-04-17', 1);
+INSERT INTO `blog` (`id`, `title`, `text`, `idUser`, `tag`, `releaseDate`, `idCategory`) VALUES
+(1, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 7, 'J9ueve; Favé; Plug; Pluggnb;', '2024-07-10 23:21:00', 5),
+(2, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 1, 'Maes; Boom Bap; Kick; Old School;', '2022-07-26 00:00:00', 3),
+(3, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 10, 'Trap; Freeze Corleone; KPRI;', '2022-07-29 00:00:00', 1),
+(4, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 11, 'Khali; Josman; New Wave; Trap;', '2022-08-03 00:00:00', 1),
+(5, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 7, 'La Fève; Khali; Kosei; New Wave; Trap;', '2022-08-25 00:00:00', 1),
+(6, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 10, 'Luv Resval; Boom Bap;', '2022-08-19 00:00:00', 3),
+(7, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 10, 'La Fève; Khali; Kosei; New Wave; Trap;', '2022-08-26 00:00:00', 1),
+(8, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 1, 'Khali; Kosei; New Wave; Trap;', '2022-08-26 00:00:00', 1),
+(9, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 10, 'Luv Resval; So La Lune; New Wave; Trap; Piano;', '2022-08-31 00:00:00', 1),
+(10, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 1, '8ruki; thaHomey; khali; Plug; Pluggnb;', '2022-09-15 00:00:00', 5),
+(11, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 1, 'Luv Resval; So La Lune; Joysad; Trap; Piano;', '2022-10-01 00:00:00', 1),
+(12, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 7, '8ruki; thaHomey; khali; Favé; Kosei; Plug; Pluggnb;', '2022-10-14 00:00:00', 5),
+(13, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 1, 'Menace Santana; Ziak; Gazo; Piano;', '2022-10-29 00:00:00', 2),
+(14, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 10, 'Menace Santana; Ziak; Halloween; Guitar;', '2022-10-31 00:00:00', 2),
+(15, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 7, 'La Fève; Khali; Kosei; New Wave; Trap;', '2022-08-25 00:00:00', 1),
+(16, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 10, 'So La Lune; Joysad; Trap; Piano;', '2022-11-20 00:00:00', 1),
+(17, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 10, 'Kerchak; Ziak; Halloween; Jersey;', '2022-10-26 00:00:00', 2),
+(18, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 11, 'Khali; Kosei; New Wave; Trap;', '2022-12-01 00:00:00', 1),
+(19, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 7, 'Khali; La Fève; Luther; NeS; Rounhaa; New Wave;', '2023-01-05 00:00:00', 1),
+(20, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 1, 'Khali; Kosei; New Wave;', '2023-01-17 00:00:00', 1),
+(21, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 11, 'Ziak; Halloween; Lewnwv;', '2023-02-06 00:00:00', 2),
+(22, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 7, '404Billy; Benjamin Epps; Boom Bap; Dark;', '2023-02-10 00:00:00', 4),
+(23, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 1, '404Billy; Benjamin Epps; Boom Bap; Dark;', '2023-02-16 00:00:00', 4),
+(24, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 7, 'Sneazzy; Lefa; New Wave; Lead;', '2023-02-20 00:00:00', 1),
+(25, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 11, 'AAMO; Leo SVR; New Wave;', '2023-07-16 00:00:00', 6),
+(26, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 11, 'AAMO; Leo SVR; New Wave;', '2023-10-31 00:00:00', 6),
+(27, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 11, 'Benjamin Epps; 404Billy; Boom Bap; Dark;', '2023-11-09 00:00:00', 4),
+(28, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 10, 'AAMO; Leo SVR; New Wave;', '2023-11-26 00:00:00', 6),
+(29, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 11, 'Jolagreen23; Khali; Kosei; New Wave;', '2023-12-09 00:00:00', 1),
+(30, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 1, 'AAMO; Leo SVR; New Wave;', '2023-12-21 00:00:00', 6),
+(31, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 1, 'Khali; Kosei; New Wave;', '2023-12-28 00:00:00', 1),
+(32, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 7, 'gapman; trap; guitar; dark;', '2024-04-17 14:29:10', 1);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `categorie`
+-- Structure de la table `category`
 --
 
-CREATE TABLE `categorie` (
-  `id` int(11) NOT NULL,
-  `name` varchar(11) NOT NULL
+CREATE TABLE `category` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `name` varchar(50) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf16 COLLATE=utf16_general_ci;
 
 --
--- Déchargement des données de la table `categorie`
+-- Déchargement des données de la table `category`
 --
 
-INSERT INTO `categorie` (`id`, `name`) VALUES
-(1, 'Trap'),
-(2, 'Drill'),
-(3, 'Boom Bap'),
-(4, 'Griselda'),
-(5, 'Plug'),
-(6, 'Detroit');
+INSERT INTO `category` (`id`, `name`) VALUES
+(1, 'Sport'),
+(2, 'Music'),
+(3, 'Science & Technology'),
+(4, 'Nature'),
+(5, 'News');
 
 -- --------------------------------------------------------
 
@@ -131,15 +131,36 @@ INSERT INTO `comment` (`id`, `text`, `idUser`, `idProd`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `follow`
+--
+
+CREATE TABLE `follow` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `idFollower` int(11) NOT NULL,
+  `idFollowed` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `follow`
+--
+
+INSERT INTO `follow` (`id`, `idFollower`, `idFollowed`) VALUES
+(1, 10, 7);
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `user`
 --
 
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
+  `firstname` varchar(50) NOT NULL,
+  `lastname` varchar(100) NOT NULL,
   `username` varchar(11) NOT NULL,
+  `avatar` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `detail` varchar(255) DEFAULT NULL,
-  `color` varchar(13) NOT NULL COMMENT '#000000 default',
   `email` varchar(255) DEFAULT NULL,
   `role` varchar(11) NOT NULL COMMENT 'admin / user'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf16 COLLATE=utf16_general_ci;
@@ -148,11 +169,11 @@ CREATE TABLE `user` (
 -- Déchargement des données de la table `user`
 --
 
-INSERT INTO `user` (`id`, `username`, `password`, `detail`, `color`, `email`, `role`) VALUES
-(1, 'oftyn', '00d70c561892a94980befd12a400e26aeb4b8599', 'Web developper', '#FFFFFF', 'thomas@mail.com', 'admin'),
-(7, 'test', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3', 'test des accounts user', '#00ff04', 'test@email.com', 'user'),
-(10, 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 'to test admin', '#000000', 'admin@mail.com', 'admin'),
-(11, 'thomas', '5f50a84c1fa3bcff146405017f36aec1a10a9e38', 'Mon compte !', '#0008ff', 'thomas', 'user');
+INSERT INTO `user` (`id`, `firstname`, `lastname`, `username`, `avatar`, `password`, `detail`, `email`, `role`) VALUES
+(1, 'firstname', 'lastname', 'username', '01.webp', '00d70c561892a94980befd12a400e26aeb4b8599', 'Web developper', 'thomas@mail.com', 'admin'),
+(7, 'firstname', 'lastname', 'test', 'test.avif', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3', 'test des accounts user', 'test@email.com', 'user'),
+(10, 'admin', 'lastname', 'admin', 'admin.webp', 'd033e22ae348aeb5660fc2140aec35850c4da997', 'to test admin', 'admin@mail.com', 'admin'),
+(11, 'Thomas', 'Gassmann', 'thomas', 'thomassimg.webp', '5f50a84c1fa3bcff146405017f36aec1a10a9e38', 'Mon compte !', 'thomas', 'user');
 
 --
 -- Index pour les tables déchargées
@@ -165,15 +186,21 @@ ALTER TABLE `blog`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `categorie`
+-- Index pour la table `category`
 --
-ALTER TABLE `categorie`
+ALTER TABLE `category`
   ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `comment`
 --
 ALTER TABLE `comment`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `follow`
+--
+ALTER TABLE `follow`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -193,16 +220,22 @@ ALTER TABLE `blog`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
--- AUTO_INCREMENT pour la table `categorie`
+-- AUTO_INCREMENT pour la table `category`
 --
-ALTER TABLE `categorie`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+ALTER TABLE `category`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `comment`
 --
 ALTER TABLE `comment`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT pour la table `follow`
+--
+ALTER TABLE `follow`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `user`
