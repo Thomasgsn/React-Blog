@@ -39,6 +39,20 @@ video {
   height: auto;
 }
 
+.container {
+  width: 100vw;
+  min-height: 100vh;
+  position: relative;
+  border-radius: 1rem;
+  align-items: center;
+  background: var(--bgColor);
+  box-shadow: 2px 2px 8px var(--greyText);
+
+  .mainContent {
+    width: 100%;
+  }
+}
+
 .message {
   display: none;
 }
@@ -83,7 +97,7 @@ video {
   }
 }
 
-.wh-null{
+.wh-null {
   width: fit-content;
   height: fit-content;
 }

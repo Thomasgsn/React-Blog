@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 
 import Top from "./Top/Top";
 import Sidebar from "../assets/Topbar/Topbar";
-import SelectedProds from "../assets/SelectedProds/SelectedProds";
+import SelectedProds from "../assets/SelectedBlogs/SelectedBlogs";
 import Recommendation from "../assets/Recommendation/Recommendation";
 
 import "./Playlist.css";

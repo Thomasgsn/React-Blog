@@ -75,6 +75,7 @@ function App() {
     },
     {
       path: "/home",
+      
       element: <Home {...{ userInfo }} />,
     },
     {

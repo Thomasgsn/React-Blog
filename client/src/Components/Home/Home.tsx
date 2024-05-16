@@ -1,13 +1,11 @@
 import { useState } from "react";
+import { UserInfo } from "../../utils/type";
 
 import Follow from "./Follow/Follow";
 import Recent from "./Recent/Recent";
 import Topbar from "../assets/Topbar/Topbar";
-// import Recommendation from "../assets/Recommendation/Recommendation";
 
 import "./Home.css";
-
-import { UserInfo } from "../../utils/type";
 
 const Body = ({ userInfo }: { userInfo: UserInfo }) => {
   const [current, setCurrent] = useState<string>("recent");
@@ -15,13 +13,26 @@ const Body = ({ userInfo }: { userInfo: UserInfo }) => {
   return (
     <div className="container">
       <Topbar {...{ userInfo }} />
-      <div className="mainContent flex">
+      <div className="mainContent">
+        <div className="switchSection flex">
+          <p
+            onClick={() => setCurrent("recent")}
+            className={current === "recent" ? "active" : ""}
+          >
+            Recent
+          </p>
+          <p
+            onClick={() => setCurrent("follow")}
+            className={current === "follow" ? "active" : ""}
+          >
+            Follow
+          </p>
+        </div>
         <div className="flex">
           <div className="blogs grid">
-            {current == "recent" ? <Recent /> : <Follow />}
+            {current == "recent" ? <Recent /> : <Follow {...{ userInfo }} />}
           </div>
         </div>
-        {/* <Recommendation /> */}
       </div>
     </div>
   );

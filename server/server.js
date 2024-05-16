@@ -103,7 +103,7 @@ app.get("/user", (req, res) => {
 });
 
 app.get("/api/user/:id", (req, res) => {
-  const sql = `SELECT id, username, detail, color, role FROM user WHERE id = ?`;
+  const sql = `SELECT id, firstname, lastname, username, avatar, detail, email, role FROM user WHERE id = ?`;
   db.query(sql, [req.params.id], (err, result) => {
     if (err) {
       console.error(
@@ -118,18 +118,6 @@ app.get("/api/user/:id", (req, res) => {
     }
 
     res.json({ result });
-  });
-});
-
-// page
-app.get("/home", (req, res) => {
-  const SQLPlaylist =
-    "SELECT b.*, u.username FROM blog b INNER JOIN user u ON u.id = b.idUser;";
-
-  db.query(SQLPlaylist, (errPlaylist, blogs) => {
-    if (errPlaylist) return res.json(errPlaylist);
-
-    return res.json(blogs);
   });
 });
 
@@ -422,7 +410,7 @@ app.get("/r/:id", (req, res) => {
 app.get("/u/:id", (req, res) => {
   const id = req.params.id;
 
-  const SQL = `SELECT id, username, email, detail, color, role FROM user WHERE id = ${id}`;
+  const SQL = `SELECT id, username, email, detail, role FROM user WHERE id = ${id}`;
 
   db.query(SQL, (errVisit, userVisit) => {
     if (errVisit) return res.json(errVisit);
@@ -525,12 +513,11 @@ const uploadNewReco = multer({ storage: storageReco });
 app.post("/editu", (req, res) => {
   const newUsername = req.body.Username;
   const newDetail = req.body.Detail;
-  const newColor = req.body.Color;
   const id = req.body.Id;
 
   const SQL =
-    "UPDATE `user` SET `username` = ?, `detail` = ?, `color` = ? WHERE `user`.`id` = ?";
-  const Values = [newUsername, newDetail, newColor, id];
+    "UPDATE `user` SET `username` = ?, `detail` = ?, WHERE `user`.`id` = ?";
+  const Values = [newUsername, newDetail, id];
 
   res.cookie("connectId", newUsername, {
     maxAge: 900000,
@@ -879,5 +866,31 @@ app.delete("/artistreco/:id", (req, res) => {
 
     console.log(message);
     return res.json({ message });
+  });
+});
+
+
+
+
+// TODO: FINI
+app.get("/home", (req, res) => {
+  const SQLPlaylist =
+    "SELECT b.*, u.username, u.id as idUser, u.avatar, c.name as category FROM blog b JOIN user u ON u.id = b.idUser JOIN category c ON c.id = b.idCategory  ORDER BY releaseDate DESC";
+
+  db.query(SQLPlaylist, (errPlaylist, blogs) => {
+    if (errPlaylist) return res.json(errPlaylist);
+
+    return res.json(blogs);
+  });
+});
+
+app.get("/follow", (req, res) => {
+  const user = req.query.currentuser;
+  const SQLPlaylist = `SELECT b.*, u.username, u.id as idUser, u.avatar, c.name as category FROM blog b JOIN user u ON u.id = b.idUser JOIN category c ON c.id = b.idCategory JOIN follow f ON b.idUser = f.idFollowed WHERE f.idFollower = ${user} ORDER BY releaseDate DESC;`;
+
+  db.query(SQLPlaylist, (errPlaylist, blogs) => {
+    if (errPlaylist) return res.json(errPlaylist);
+
+    return res.json(blogs);
   });
 });

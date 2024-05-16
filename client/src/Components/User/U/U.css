@@ -1,8 +1,11 @@
-.userContent {
-  width: 82%;
-  height: 100%;
-  padding: 2rem;
-  overflow: auto;
+.container {
+  width: 100vw;
+  min-height: 100vh;
+  position: relative;
+  align-items: center;
+  border-radius: 1rem;
+  box-shadow: 2px 2px 8px var(--greyText);
+  background: var(--bgColor);
 
   .bottom {
     margin-top: 2rem;

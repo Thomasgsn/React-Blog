@@ -1,23 +1,26 @@
 import { useEffect, useState } from "react";
+import { BlogInfo, UserInfo } from "../../../utils/type";
+import SelectedBlogs from "../../assets/SelectedBlogs/SelectedBlogs";
 
-const Follow = () => {
-  const [blog, setBlog] = useState([]);
+const Follow = ({ userInfo }: { userInfo: UserInfo }) => {
+  const [blogs, setBlogs] = useState<BlogInfo[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:8081/home")
+    fetch(`http://localhost:8081/follow?currentuser=${userInfo.id}`)
       .then((response) => response.json())
       .then((blogs) => {
-        setBlog(blogs);
+        setBlogs(blogs);
       })
       .catch((error) =>
         console.error("Erreur lors de la récupération des données :", error)
       );
-  }, []);
+  }, [userInfo.id]);
 
   return (
-    <div className="myPlaylistSection">
-      <p>Follow</p>
-    </div>
+    <>
+      <SelectedBlogs {...{ blogs }} />
+    </>
   );
 };
+
 export default Follow;

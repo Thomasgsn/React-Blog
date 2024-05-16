@@ -1,24 +1,25 @@
 export interface UserInfo {
   id: number;
+  firstname: string;
+  lastname: string;
   username: string;
+  avatar: string;
+  detail: string;
+  email: string;
   role: string;
 }
 
-export interface Prods {
+export interface BlogInfo {
   id: number;
-  name: string;
+  title: string;
+  text: string;
+  idUser: number;
   tag: string;
-  coverProdFile: string;
-  prodFile: string;
-  instrurapLink: string;
-  BPM: number;
-  key: string;
-  price: number;
-  prod_name: string;
-  cover: string;
   releaseDate: string;
-  idTB: number;
-  typebeat: string;
+  idCategory: number;
+  username: string;
+  avatar: number;
+  category: string;
 }
 
 export interface Playlist {
@@ -50,4 +51,15 @@ export interface ArtistReco {
   id: number;
   name: string;
   img: string;
+}
+
+export interface UserVisit {
+  id: number;
+  firstname: string;
+  lastname: string;
+  username: string;
+  avatar: string;
+  detail: string;
+  email: string;
+  role: string;
 }
