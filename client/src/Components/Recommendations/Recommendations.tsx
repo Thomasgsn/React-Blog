@@ -3,7 +3,7 @@ import { UserInfo } from "../../utils/type";
 
 import Top from "./Top/Top";
 import MyRecommendation from "./MyRecommendation/MyRecommendation";
-import Sidebar from "../assets/Topbar/Topbar";
+import Sidebar from "../assets/Topbar/HomeTopbar/HomeTopbar";
 
 import "./Recommendations.css";
 

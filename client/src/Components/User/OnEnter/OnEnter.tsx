@@ -8,12 +8,15 @@ const OnEnter = () => {
   return (
     <div className="onEnterPage flex">
       <div className="container flex">
-        <div className="videoDiv">
-          <div className="textDiv">
-            <h2 className="title">Find the best production for your needs</h2>
-            <p>Free & low price prods !</p>
+        <div className="infoDiv">
+          <div className="headerDiv">
+            <img src="media/logo.png" alt="Logo" />
+            <h3>Welcome !</h3>
           </div>
-
+          <div className="textDiv">
+            <h2 className="title">Explore a new world !</h2>
+            <p>Free blog.</p>
+          </div>
           <div className="footerDiv flex">
             <span className="text">
               You need to be logged for enter in the shop.
@@ -22,14 +25,6 @@ const OnEnter = () => {
               <button className="btn">Login</button>
             </Link>
           </div>
-        </div>
-
-        <div className="enterDiv flex">
-          <div className="headerDiv">
-            <img src="media/logo.png" alt="Logo" />
-            <h3>Welcome Back !</h3>
-          </div>
-
           <div className="inputDiv">
             <div>
               <span>Already have an acount ?</span>

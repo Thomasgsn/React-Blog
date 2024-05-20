@@ -2,31 +2,40 @@ import { UserInfo } from "./utils/type";
 import { useEffect, useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import OnEnter from "./Components/User/OnEnter/OnEnter";
 import Login from "./Components/User/Login/Login";
 import Register from "./Components/User/Register/Register";
-import OnEnter from "./Components/User/OnEnter/OnEnter";
+
 import Home from "./Components/Home/Home";
-import Shop from "./Components/Shop/Shop";
-import Prods from "./Components/Prods/Prods";
-import Prod from "./Components/Prod/Prod";
-import Playlists from "./Components/Playlists/Playlists";
-import Playlist from "./Components/Playlist/Playlist";
-import Recommendations from "./Components/Recommendations/Recommendations";
-import Recommendation from "./Components/Recommendation/Recommendation";
-import AboutMe from "./Components/AboutMe/AboutMe";
+import Followers from "./Components/Followers/Followers";
+
+import Edit from "./Components/Edit/Edit";
+import Like from "./Components/Like/Like";
+
+import Blog from "./Components/Blog/Blog";
+import Category from "./Components/Category/Category";
 import U from "./Components/User/U/U";
 
 import axios from "axios";
-import Edit from "./Edit/Edit";
-import Payment from "./Components/Payment/Payment";
-import Contacts from "./Components/Contacts/Contacts";
+import Loader from "./utils/Loader";
 
 import "./App.css";
 
 function App() {
   const [id, setId] = useState<number>(0);
+  const [userInfo, setUserInfo] = useState<UserInfo>({
+    id: 0,
+    firstname: "",
+    lastname: "",
+    username: "",
+    avatar: "",
+    detail: "",
+    email: "",
+    role: "",
+  });
 
   axios.defaults.withCredentials = true;
+
   useEffect(() => {
     axios
       .get("http://localhost:8081/user")
@@ -36,15 +45,7 @@ function App() {
         }
       })
       .catch((err) => console.log(err));
-  }, []);
 
-  const [userInfo, setUserInfo] = useState<UserInfo>({
-    id: 0,
-    username: "",
-    role: "",
-  });
-
-  useEffect(() => {
     if (id) {
       axios
         .get(`http://localhost:8081/api/user/${id}`)
@@ -75,60 +76,31 @@ function App() {
     },
     {
       path: "/home",
-      
-      element: <Home {...{ userInfo }} />,
+      element: userInfo.id != 0 ? <Home {...{ userInfo }} /> : <Loader />,
     },
     {
-      path: "/shop",
-      element: <Shop {...{ userInfo }} />,
-    },
-    {
-      path: "/prods",
-      element: <Prods {...{ userInfo }} />,
-    },
-    {
-      path: "/prod/:id",
-      element: <Prod {...{ userInfo }} />,
-    },
-    {
-      path: "/playlists",
-      element: <Playlists {...{ userInfo }} />,
-    },
-    {
-      path: "/playlist/:playlistName",
-      element: <Playlist {...{ userInfo }} />,
-    },
-    {
-      path: "/recommendations",
-      element: <Recommendations {...{ userInfo }} />,
-    },
-    {
-      path: "/r/:id",
-      element: <Recommendation {...{ userInfo }} />,
-    },
-    {
-      path: "/aboutme",
-      element: <AboutMe {...{ userInfo }} />,
-    },
-    {
-      path: "/u/:id",
-      element: <U {...{ userInfo }} />,
+      path: "/followers",
+      element: <Followers {...{ userInfo }} />,
     },
     {
       path: "/edit",
       element: <Edit {...{ userInfo }} />,
     },
     {
-      path: "/edit/:section",
-      element: <Edit {...{ userInfo }} />,
+      path: "/like",
+      element: <Like {...{ userInfo }} />,
     },
     {
-      path: "/contacts",
-      element: <Contacts {...{ userInfo }} />,
+      path: "/blog/:id",
+      element: <Blog {...{ userInfo }} />,
     },
     {
-      path: "/payment",
-      element: <Payment {...{ userInfo }} />,
+      path: "/category/:categoryName",
+      element: <Category {...{ userInfo }} />,
+    },
+    {
+      path: "/u/:id",
+      element: <U {...{ userInfo }} />,
     },
   ]);
 

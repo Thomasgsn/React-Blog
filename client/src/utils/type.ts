@@ -9,6 +9,17 @@ export interface UserInfo {
   role: string;
 }
 
+export interface BlogImage {
+  id: number;
+  idBlog: number;
+  name: string;
+}
+
+export interface Liked {
+  idBlog: number;
+  idUser: number;
+}
+
 export interface BlogInfo {
   id: number;
   title: string;
@@ -18,24 +29,14 @@ export interface BlogInfo {
   releaseDate: string;
   idCategory: number;
   username: string;
-  avatar: number;
+  avatar: string;
   category: string;
+  image: BlogImage[];
 }
 
-export interface Playlist {
+export interface Category {
   id: number;
   name: string;
-  tag: string;
-  coverProdFile: string;
-  instrurapLink: string;
-  BPM: number;
-  key: string;
-  price: number;
-  prod_id: number;
-  prod_name: string;
-  cover: string;
-  releaseDate: string;
-  idTB: number;
 }
 
 export interface SongReco {

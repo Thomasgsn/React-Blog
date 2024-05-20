@@ -35,4 +35,5 @@ Loader : [uiball](https://uiball.com/ldrs/)\
 Vite : [Vite Docs](https://vitejs.dev/guide/)\
 Tabler : [Tabler Dos](https://tabler.io/icons)\
 JS-SHA1 : [JS-SHA1 Docs](https://www.npmjs.com/package/js-sha1)\
-JS-Cookie : [JS-Cookie Docs](https://www.npmjs.com/package/js-cookie)
+JS-Cookie : [JS-Cookie Docs](https://www.npmjs.com/package/js-cookie)\
+React-Carousel : [React-Carousel Docs](https://www.npmjs.com/package/react-responsive-carousel)

@@ -1,88 +1,84 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Axios from "axios";
-
 import { IconArrowRight, IconLock, IconUser } from "@tabler/icons-react";
 
-import "../User.css";
 import axios from "axios";
+
+import "../User.css";
+
+interface User {
+  username_email: string | null;
+  password: string;
+}
 
 const Login = () => {
   const navigateTo = useNavigate();
+  const [user, setUser] = useState<User>({
+    username_email: "",
+    password: "",
+  });
 
-  const [loginUsername, setLoginUsername] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUser((prevState) => ({ ...prevState, [name]: value }));
+  };
 
-  axios.defaults.withCredentials = true;
-  const loginUser = (e: { preventDefault: () => void; }) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    Axios.post("http://localhost:8081/login", {
-      LoginUsername: loginUsername,
-      LoginPassword: loginPassword,
-    })
-      .then((res) => {
-        if (res.data.Login) {
-          navigateTo("/home");
-        } else {
-          alert(`Error in id or password`);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
+    try {
+      await axios.post("http://localhost:8081/login", user);
+      navigateTo("/home");
+    } catch (error) {
+      alert(`Error in id or password`);
+      console.error("Error:", error);
+    }
   };
 
   useEffect(() => {
-    axios.get('http://localhost:8081/user')
-    .then (res => {
-      if(res.data.valid) {
-        navigateTo('/home')
+    axios.get("http://localhost:8081/user").then((res) => {
+      if (res.data.valid === true) {
+        navigateTo("/home");
       } else {
-        navigateTo('/login')
+        navigateTo("/login");
       }
-    })
-  },[navigateTo])
+    });
+  }, [navigateTo]);
 
   return (
     <div className="loginPage flex">
       <div className="container flex">
-        <div className="videoDiv">
-
-          <div className="textDiv">
-            <h2 className="title">Find the best production for your needs</h2>
-            <p>Free & low price prods !</p>
+        <div className="infoDiv">
+          <div className="headerDiv">
+            <img src="media/logo.png" alt="Logo" />
+            <h3>Welcome !</h3>
           </div>
-
+          <div className="textDiv">
+            <h2 className="title">Explore a new world !</h2>
+            <p>Free blog.</p>
+          </div>
           <div className="footerDiv flex">
-            <span className="text">Don't have an account ?</span>
+            <span className="text">Doesn't have an account ?</span>
             <Link to="/register">
-              <button className="btn">Sign Up</button>
+              <button className="btn">Register</button>
             </Link>
           </div>
         </div>
 
         <div className="formDiv flex">
-          <div className="headerDiv">
-            <img src="media/logo.png" alt="Logo" />
-            <h3>Welcome Back !</h3>
-          </div>
-
-          <form action="" className="form grid">
+          <form className="form grid" onSubmit={handleSubmit}>
             <span className="message">no message</span>
-
             <div className="inputDiv">
               <div>
-                <label htmlFor="username">Username</label>
+                <label htmlFor="username or email">Username or Email</label>
                 <div className="input flex">
                   <IconUser className="icon" />
                   <input
                     type="text"
-                    id="username"
-                    autoComplete='username'
-                    placeholder="Enter Username"
-                    onChange={(event) => {
-                      setLoginUsername(event.target.value);
-                    }}
+                    name="username_email"
+                    autoComplete="username"
+                    placeholder="Enter Username or Email"
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -92,16 +88,14 @@ const Login = () => {
                   <IconLock className="icon" />
                   <input
                     type="password"
-                    id="password"
-                    autoComplete='current-password'
+                    name="password"
+                    autoComplete="current-password"
                     placeholder="Enter password"
-                    onChange={(event) => {
-                      setLoginPassword(event.target.value);
-                    }}
+                    onChange={handleChange}
                   />
                 </div>
               </div>
-              <button type="submit" className="btn flex" onClick={loginUser}>
+              <button type="submit" className="btn flex">
                 <span>Login</span>
                 <IconArrowRight className="icon" />
               </button>

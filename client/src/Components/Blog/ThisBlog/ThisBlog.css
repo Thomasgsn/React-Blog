@@ -1,0 +1,233 @@
+.thisBlog {
+  overflow: hidden;
+
+  .goBack {
+    position: absolute;
+    top: 34px;
+    left: -10px;
+    width: 150px !important;
+    scale: 0.65;
+
+    .icn {
+      margin-right: 0.5rem;
+      transition: all 0.1s ease;
+    }
+
+    &:hover {
+      .icn {
+        transform: translateX(-3px);
+      }
+    }
+  }
+
+  .blog {
+    margin-top: 0.5rem;
+    gap: 1rem;
+
+    ::-webkit-scrollbar {
+      display: block !important;
+      width: 0.5rem !important;
+      height: 0.5rem !important;
+    }
+    ::-webkit-scrollbar-thumb {
+      display: block !important;
+      background-color: var(--primaryColor) !important;
+      border-radius: 0.5rem;
+    }
+    ::-webkit-scrollbar-track {
+      display: block !important;
+      background-color: var(--primarySecondColor) !important;
+      border-radius: 0.5rem;
+    }
+
+    .blogContent,
+    .blogComment {
+      height: 85vh;
+      background: var(--bgColor);
+      overflow: hidden scroll;
+    }
+
+    .blogContent {
+      padding: 1rem;
+      width: 55vw;
+      border-radius: 1rem 0 0 1rem;
+
+      .head {
+        justify-content: space-between;
+      }
+
+      .author {
+        justify-content: space-between;
+        font-size: var(--normalFontSize);
+        font-weight: 500;
+
+        .avatar {
+          background: var(--hoverColor);
+          width: 5rem;
+          height: 5rem;
+          border-radius: 50%;
+          margin-right: 0.5rem;
+          justify-content: center;
+          cursor: pointer;
+          transition: 0.3s ease;
+
+          img {
+            width: 4.25rem;
+            height: 4.25rem;
+            object-fit: cover;
+            border-radius: 50%;
+          }
+
+          &:hover {
+            background-color: var(--greyText);
+          }
+        }
+
+        .dateName {
+          width: fit-content;
+          margin-right: 1rem;
+
+          .date {
+            color: var(--greyText);
+            font-size: var(--normalFontSize);
+          }
+
+          .name {
+            cursor: pointer;
+            font-weight: 600;
+            margin: 0.5rem 0 0;
+            text-align: end;
+            font-size: var(--h3FontSize);
+
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+
+      h1 {
+        font-size: var(--h1FontSize);
+        text-decoration: underline;
+        margin-bottom: 2rem;
+      }
+
+      p {
+        margin-bottom: 1rem;
+      }
+
+      .slide {
+        img {
+          height: 34rem;
+          width: auto;
+        }
+      }
+    }
+
+    .blogComment {
+      padding: 1rem;
+      width: 35vw;
+      border-radius: 0 1rem 1rem 0;
+
+      a {
+        color: var(--blackColor);
+        font-weight: 700;
+        cursor: pointer;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      .del {
+        position: relative;
+        background-color: rgba(255, 0, 0, 0.25);
+        width: 2rem;
+        height: 2rem;
+
+        .icon {
+          transform: translate(-0.85rem, -0.5rem);
+          color: red;
+        }
+
+        &:hover {
+          border: red 1px solid;
+          transform: 0.3s ease;
+
+          .icon {
+            transform: translate(-0.85rem, -0.5rem);
+          }
+        }
+      }
+
+      span {
+        color: var(--blackColor);
+        font-weight: 500;
+      }
+
+      .addComment {
+        z-index: 9;
+        position: fixed;
+        width: 34.58%;
+        bottom: 2.5rem;
+        background-color: var(--primaryColor);
+        height: 3rem;
+        transform: translate(-1rem, -0.75rem);
+        border-radius: 1rem 1rem 0 0;
+        cursor: pointer;
+
+        input {
+          background: none;
+          width: 26vw;
+          outline: none;
+          border: none;
+          padding: 0 0.5rem;
+          background: var(--inputColor);
+          border-radius: 10px;
+          transform: translateX(-.75rem);
+        }
+
+        p {
+          color: var(--blackColor);
+          font-size: 0.7vw;
+          text-align: center;
+          font-weight: 500;
+
+          &:hover {
+            text-decoration: underline;
+            color: var(--blackColor);
+          }
+        }
+
+        p.cancel {
+          position: absolute;
+          left: 1rem;
+          &:hover {
+            color: var(--blackColor);
+          }
+        }
+
+        .send {
+          position: absolute;
+          right: 0.75rem;
+          height: 2rem;
+          width: 10%;
+          padding: 0.5rem 0.75rem 1.5rem 0.75rem;
+          background: var(--primarySecondColor);
+          transform: translateY(-0.5rem);
+
+          &:hover {
+            background: var(--primaryColor);
+            border: var(--primarySecondColor) 2px solid;
+          }
+        }
+
+        &:hover {
+          p.add {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}

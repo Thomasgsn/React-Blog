@@ -1,20 +1,15 @@
 .topbar {
   z-index: 9;
+  display: flex;
+  justify-content: space-between;
   position: fixed;
-  justify-content: center;
   width: 100%;
   height: 3rem;
   top: 0;
   background: var(--whiteColor);
   box-shadow: 1px 0px 4px var(--greyText);
   gap: 3rem;
-  justify-content: space-between;
-
-  .search {
-    img {
-      width: 5rem;
-    }
-
+  
     .searchBar {
       background: var(--bgColor);
       border-radius: 5px;
@@ -34,8 +29,12 @@
       }
     }
 
+  .search {
+    img {
+      width: 5rem;
+    }
+
     .icon.search {
-      
       display: none;
     }
   }
@@ -47,7 +46,7 @@
 
     .link {
       justify-content: center;
-      height: 3vw;
+      height: 3rem;
       width: 5vw;
 
       &::before {
@@ -55,16 +54,16 @@
         content: "";
         width: 0%;
         height: 5px;
-        bottom: -1px;
+        bottom: -0.35rem;
         border-top-right-radius: 10px;
         border-bottom-right-radius: 10px;
         background: var(--primaryColor);
         transition: 0.05s ease-out;
-        border-radius: 1rem 1rem 0 0;
+        border-radius: 0 0 1rem 1rem;
       }
 
       &:hover::before {
-        width: 64px;
+        width: 3vw;
         transition: 0.1s ease-in;
       }
     }
@@ -136,6 +135,16 @@
       }
       .icon.search {
         display: inline-block;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .topbar {
+    .user {
+      span.name {
+        display: none;
       }
     }
   }

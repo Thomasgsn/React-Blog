@@ -3,16 +3,17 @@ import { UserInfo } from "../../utils/type";
 
 import Follow from "./Follow/Follow";
 import Recent from "./Recent/Recent";
-import Topbar from "../assets/Topbar/Topbar";
+import Topbar from "../assets/Topbar/HomeTopbar/HomeTopbar";
 
 import "./Home.css";
 
 const Body = ({ userInfo }: { userInfo: UserInfo }) => {
   const [current, setCurrent] = useState<string>("recent");
+  const [search, setSearch] = useState<string>("");
 
   return (
     <div className="container">
-      <Topbar {...{ userInfo }} />
+      <Topbar {...{ userInfo, search, setSearch }} />
       <div className="mainContent">
         <div className="switchSection flex">
           <p
@@ -29,9 +30,11 @@ const Body = ({ userInfo }: { userInfo: UserInfo }) => {
           </p>
         </div>
         <div className="flex">
-          <div className="blogs grid">
-            {current == "recent" ? <Recent /> : <Follow {...{ userInfo }} />}
-          </div>
+          {current == "recent" ? (
+            <Recent {...{ userInfo, search }} />
+          ) : (
+            <Follow {...{ userInfo, search }} />
+          )}
         </div>
       </div>
     </div>

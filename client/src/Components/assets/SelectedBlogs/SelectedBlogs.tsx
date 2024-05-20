@@ -1,21 +1,44 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BlogInfo } from "../../../utils/type";
+import { IconHeart } from "@tabler/icons-react";
+import { Carousel } from "react-responsive-carousel";
+import { BlogInfo, BlogImage, UserInfo, Liked } from "../../../utils/type";
+
+import axios from "axios";
+
+import "./SelectedBlogs.css";
 
 interface BlogDate {
   releaseDate: string;
 }
 
 const SelectedBlogs = ({
+  userInfo,
   blogs,
+  imagesBlogs,
 }: {
+  userInfo: UserInfo;
   blogs: BlogInfo[];
+  imagesBlogs: BlogImage[];
 }) => {
   const navigateTo = useNavigate();
 
-  const thisYear = new Date().getFullYear();
+  const [liked, setLiked] = useState<Liked[]>([]);
 
+  useEffect(() => {
+    fetch(`http://localhost:8081/reqlike/${userInfo.id}`)
+      .then((response) => response.json())
+      .then((likes) => {
+        setLiked(likes);
+      })
+      .catch((error) =>
+        console.error("Erreur lors de la récupération des données :", error)
+      );
+  }, [userInfo.id]);
+
+  const thisYear = new Date().getFullYear();
   const BlogDate = (b: BlogDate) => {
-    const minute = parseInt(b.releaseDate.split("T")[1].split(":")[1]);
+    const minute = b.releaseDate.split("T")[1].split(":")[1];
     const hour = b.releaseDate.split("T")[1].split(":")[0];
 
     const day = b.releaseDate.split("T")[0].split("-")[2];
@@ -44,45 +67,105 @@ const SelectedBlogs = ({
     return date;
   };
 
+  const text = (text: string) => {
+    return text.split("\n").map((item, index) => (
+      <span key={index}>
+        {item}
+        <br />
+      </span>
+    ));
+  };
+
+  const like = async (e: number) => {
+    try {
+      await axios.post(`http://localhost:8081/like/${userInfo.id}/${e}`);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const isLiked = (blogId: number) => {
+    return liked.some(
+      (like) => like.idUser === userInfo.id && like.idBlog === blogId
+    );
+  };
+
   return (
-    <>
-      {blogs.map((b) => (
-        <div className="blog">
-          <div className="info flex">
-            <div className="flex author">
-              <div className="avatar flex">
-                <img
-                  src={`avatars/${b.avatar}`}
-                  alt={`${b.username} avatar`}
-                  onClick={() => navigateTo(`/u/${b.idUser}`)}
-                />
+    <div className="blogs grid">
+      {blogs && blogs.length > 0 ? (
+        blogs.map((b) => {
+          const blogImages = imagesBlogs.filter(
+            (image) => image.idBlog === b.id
+          );
+          return (
+            <div key={b.id} className="blog">
+              <div className="info flex">
+                <div className="flex author">
+                  <div className="flex">
+                    <div className="avatar flex">
+                      <img
+                        src={`/avatars/${b.avatar}`}
+                        alt={`${b.username} avatar`}
+                        onClick={() => navigateTo(`/u/${b.idUser}`)}
+                      />
+                    </div>
+                    <div>
+                      <p
+                        className="name"
+                        onClick={() => navigateTo(`/u/${b.idUser}`)}
+                      >
+                        {b.username}
+                      </p>
+                      <p className="date">
+                        <BlogDate releaseDate={b.releaseDate} />
+                      </p>
+                    </div>
+                  </div>
+                  <a className="btn flex" href={`/category/${b.category}`}>
+                    {b.category}
+                  </a>
+                </div>
+                <p className="title">{b.title} -</p>
+                <p className="text">{text(b.text)}</p>
+                <div className="seeMore flex">
+                  <div className="btn flex like" onClick={() => like(b.id)}>
+                    <IconHeart
+                      className="icn"
+                      fill={isLiked(b.id) ? "var(--primaryColor)" : "none"}
+                    />
+                  </div>
+                  <a className="btn flex goBlog" href={`/blog/${b.id}`}>
+                    See more
+                  </a>
+                </div>
               </div>
-              <div>
-                <p
-                  className="cursor"
-                  onClick={() => navigateTo(`/u/${b.idUser}`)}
+
+              <div className="img flex">
+                <Carousel
+                  autoPlay
+                  infiniteLoop
+                  dynamicHeight
+                  showThumbs={false}
                 >
-                  {b.username}
-                </p>
-                <p className="date">
-                  <BlogDate releaseDate={b.releaseDate} />
-                </p>
+                  {blogImages.map((img, index) => (
+                    <div key={index}>
+                      <img
+                        className="blogImage"
+                        src={`/blogs/${img.name}`}
+                        alt={b.title}
+                      />
+                    </div>
+                  ))}
+                </Carousel>
               </div>
             </div>
-            <p className="title">{b.title} -</p>
-            <p className="text">{b.text}</p>
-          </div>
-          <div className="img">
-            <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8MTkyMHgxMDgwfGVufDB8fDB8fHww" />
-          </div>
-          <div className="seeMore flex">
-            <a className="btn flex" href={`/blog/${b.id}`}>
-              See more
-            </a>
-          </div>
-        </div>
-      ))}
-    </>
+          );
+        })
+      ) : (
+        <p>No blogs found</p>
+      )}
+    </div>
   );
 };
 

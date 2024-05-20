@@ -1,6 +1,6 @@
 import Top from "./Top/Top";
 
-import Sidebar from "../assets/Topbar/Topbar";
+import Sidebar from "../assets/Topbar/HomeTopbar/HomeTopbar";
 
 import "./AboutMe.css";
 

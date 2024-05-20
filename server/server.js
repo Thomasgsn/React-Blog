@@ -7,6 +7,8 @@ const bodyParser = require("body-parser");
 const multer = require("multer");
 const path = require("path");
 var sha1 = require("js-sha1");
+var uuid = require("react-uuid");
+const fs = require("fs");
 
 const port = "8081";
 
@@ -53,54 +55,6 @@ const db = mysql.createConnection({
 });
 
 // TODO: Connection
-app.post("/register", (req, res) => {
-  const sendEmail = req.body.Mail;
-  const sendUsername = req.body.Username;
-  const sendPassword = sha1(req.body.Password);
-
-  const SQL = "INSERT INTO `user` (email, username, password) VALUES (?,?,?)";
-  const Values = [sendEmail, sendUsername, sendPassword];
-
-  db.query(SQL, Values, (err, results) => {
-    if (err) return res.send(err);
-    return res.send({ Message: "User added!" });
-  });
-});
-
-app.post("/login", (req, res) => {
-  const sentLoginUsername = req.body.LoginUsername;
-  const sentLoginPassword = sha1(req.body.LoginPassword);
-
-  const SQL = "SELECT * FROM `user` WHERE username = ? and password = ?";
-  const Values = [sentLoginUsername, sentLoginPassword];
-
-  db.query(SQL, Values, (err, result) => {
-    if (err) return res.json({ Message: err });
-    if (result.length > 0) {
-      res.cookie("connectId", result[0].username, {
-        maxAge: 10000 * 60 * 60 * 24,
-        httpOnly: false,
-      });
-      return res.json({ Login: true, username: req.cookies.connectId });
-    } else {
-      return res.json({ Login: false });
-    }
-  });
-});
-
-app.get("/user", (req, res) => {
-  if (req.cookies.connectId) {
-    const sql = `SELECT id FROM user WHERE username = '${req.cookies.connectId}'`;
-    db.query(sql, (err, result) => {
-      return res.json({
-        valid: true,
-        id: result[0].id !== null ? result[0].id : "",
-      });
-    });
-  } else {
-    return res.json({ valid: false });
-  }
-});
 
 app.get("/api/user/:id", (req, res) => {
   const sql = `SELECT id, firstname, lastname, username, avatar, detail, email, role FROM user WHERE id = ?`;
@@ -200,135 +154,6 @@ app.get("/prods", (req, res) => {
     }
 
     res.json(dataProds);
-  });
-});
-
-app.get("/prod/:id", (req, res) => {
-  const id = req.params.id;
-  const SQL = `SELECT p.name, p.key, p.BPM, p.price, p.releaseDate, p.id, p.cover, p.instrurapLink, T.name AS typebeat from prod p INNER JOIN typebeat T on T.id = p.idTB WHERE p.id = ${id}`;
-  const SQLcomment = `SELECT C.*, U.username from prod p
-  INNER JOIN comment C on C.idProd = p.id
-  INNER JOIN user U on U.id = C.idUser
-  WHERE p.id = ${id}`;
-
-  db.query(SQL, (errProd, prodDetail) => {
-    db.query(SQLcomment, (errComment, prodComment) => {
-      if (errProd) return res.json(errProd);
-      if (errComment) return res.json(errComment);
-
-      const result = {
-        prodDetail: prodDetail,
-        prodComment: prodComment,
-      };
-      return res.json(result);
-    });
-  });
-});
-
-app.post("/newcomment", (req, res) => {
-  const comment = req.body;
-
-  const SQL =
-    "INSERT INTO `comment` (`id`, `text`, `idUser`, `idProd`) VALUES (NULL, ?, ?, ?)";
-  const Values = [comment.text, comment.idUser, comment.idProd];
-  const message = "Comment successfully added !";
-
-  db.query(SQL, Values, (err, results) => {
-    if (err) return res.send(err);
-    console.log(message);
-    return res.json(message);
-  });
-});
-
-app.delete("/comment/:id", (req, res) => {
-  const id = req.params.id;
-
-  const SQL = "DELETE FROM `comment` WHERE id = ?";
-  const message = "Comment successfully removed !";
-
-  db.query(SQL, [id], (err, results) => {
-    if (err) {
-      console.error(err);
-      return res.send(err);
-    }
-
-    if (results.affectedRows === 0) {
-      console.log("No comment found with the provided ID.");
-      return res
-        .status(404)
-        .json({ error: "No comment found with the provided ID." });
-    }
-
-    console.log(message);
-    return res.json({ message });
-  });
-});
-
-app.get("/playlists", (req, res) => {
-  const searchBy = req.query.searchBy;
-  const SQLprod = `SELECT p.* FROM prod p WHERE p.idTB IN (SELECT tb.id FROM typebeat tb) AND p.id IN (SELECT id FROM (SELECT id, idTB, ROW_NUMBER() OVER(PARTITION BY idTB ORDER BY id DESC) AS row_num FROM prod) AS ranked WHERE row_num <= 8) ORDER BY p.idTB, p.id DESC;`;
-  const SQLplaylist = `SELECT * FROM typebeat WHERE (name LIKE "%${searchBy}%" OR name LIKE "${searchBy}%" OR name LIKE "%${searchBy}")`;
-
-  db.query(SQLplaylist, (errPlaylist, dataPlaylist) => {
-    db.query(SQLprod, (errProd, dataPlaylistProd) => {
-      if (errPlaylist) return res.json(errPlaylist);
-      if (errProd) return res.json(errProd);
-
-      const result = {
-        playlist: dataPlaylist,
-        playlistProd: dataPlaylistProd,
-      };
-      return res.json(result);
-    });
-  });
-});
-
-app.get("/playlist/:playlistName", (req, res) => {
-  const playlistName = req.params.playlistName;
-  const filterBy = req.query.filterBy;
-  const searchBy = req.query.searchBy;
-  const priceRange = req.query.priceRange;
-  let price = priceRange.split("-");
-
-  let SQL = `SELECT p.* FROM prod p JOIN typebeat ON p.idTB = typebeat.id WHERE typebeat.name = '${playlistName}' AND p.price BETWEEN ${price[0]} AND ${price[1]}`;
-
-  if (searchBy && searchBy != "") {
-    SQL += ` AND (p.name LIKE "%${searchBy}%" OR p.tag LIKE "%${searchBy}%" OR p.name LIKE "${searchBy}%" OR p.tag LIKE "${searchBy}%" OR p.name LIKE "%${searchBy}" OR p.tag LIKE "%${searchBy}")`;
-  }
-
-  switch (filterBy) {
-    case "price":
-      SQL += " ORDER BY p.price ASC";
-      break;
-
-    case "priceinv":
-      SQL += " ORDER BY p.price DESC";
-      break;
-
-    case "date":
-      SQL += " ORDER BY p.releaseDate DESC";
-      break;
-
-    case "dateinv":
-      SQL += " ORDER BY p.releaseDate ASC";
-      break;
-
-    case "type":
-      SQL += " ORDER BY p.idTB ASC";
-      break;
-
-    case "typeinv":
-      SQL += " ORDER BY p.idTB DESC";
-      break;
-
-    default:
-      break;
-  }
-
-  db.query(SQL, (errPlaylist, playlistProd) => {
-    if (errPlaylist) return res.json(errPlaylist);
-
-    res.json(playlistProd);
   });
 });
 
@@ -550,83 +375,453 @@ app.get("/allprods", (req, res) => {
 
 const uploadhh = multer({});
 
-app.post(
-  "/crudprodtest",
-  // uploadhh.fields([
-  uploadNewProd.fields([
-    {
-      name: "cover",
-      maxCount: 1,
-    },
-    {
-      name: "audio",
-      maxCount: 1,
-      dest: "/audio",
-    },
-  ]),
-  (req, res) => {
-    const prod = JSON.parse(req.body.newProd);
-    const files = req.files;
+//TODO: FINI
 
-    let message = "Prod successfully ";
-    let SQL;
-    let Values;
-    if (prod.id === 0) {
-      SQL =
-        "INSERT INTO `prod` (`id`, `name`, `tag`, `cover`, `prodFile`, `instrurapLink`, `BPM`, `key`, `price`, `releaseDate`, `idTB`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-      Values = [
-        prod.name,
-        prod.tag,
-        req.files.cover,
-        req.files.audio,
-        prod.instrurapLink,
-        prod.BPM,
-        prod.key,
-        prod.price,
-        prod.releaseDate,
-        prod.idTB,
+// REGISTER
+const avatarDir = path.join(__dirname, "../client/public/avatars");
+const storageAvatar = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, avatarDir);
+  },
+  filename: function (req, file, cb) {
+    const uniqueFilename = `${uuid()}-${file.originalname}`;
+    cb(null, uniqueFilename);
+  },
+});
+const uploadAvatar = multer({
+  storage: storageAvatar,
+});
+app.post("/register", uploadAvatar.single("file"), (req, res) => {
+  const u = JSON.parse(req.body.user);
+  const file = req.file.filename;
+
+  const checkUsernameSQL = "SELECT id FROM `user` WHERE username = ?";
+
+  db.query(checkUsernameSQL, [u.username], (err, results) => {
+    if (err) {
+      fs.unlink(path.join(avatarDir, file), (unlinkErr) => {
+        if (unlinkErr) console.log(unlinkErr);
+        return res.send(err);
+      });
+    } else if (results.length > 0) {
+      fs.unlink(path.join(avatarDir, file), (unlinkErr) => {
+        if (unlinkErr) console.log(unlinkErr);
+        console.log("Username already exists");
+        return res.status(400).json({ error: "Username already exists" });
+      });
+    } else {
+      const message = "User successfully created: " + u.username;
+
+      const SQL =
+        "INSERT INTO `user` (firstname, lastname, username, avatar, email, password) VALUES (?,?,?,?,?,?)";
+      const Values = [
+        u.firstname,
+        u.lastname,
+        u.username,
+        file,
+        u.email,
+        u.password,
       ];
-      message += "added !";
+
+      console.log(Values);
+
+      db.query(SQL, Values, (err, results) => {
+        if (err) return res.send(err);
+        console.log(message);
+        return res.json({ message: message });
+      });
+    }
+  });
+});
+// END REGISTER
+
+// LOGIN
+app.get("/user", (req, res) => {
+  if (req.cookies.connectId) {
+    const sql = `SELECT id FROM user WHERE username = '${req.cookies.connectId}'`;
+    db.query(sql, (err, result) => {
+      return res.json({
+        valid: true,
+        id: result[0].id,
+      });
+    });
+  } else {
+    return res.json({ valid: false });
+  }
+});
+app.post("/login", (req, res) => {
+  const u = req.body;
+
+  const SQL =
+    "SELECT username FROM `user` WHERE (username = ? OR email = ?) AND password = ?";
+  const Values = [u.username_email, u.username_email, sha1(u.password)];
+
+  db.query(SQL, Values, (err, result) => {
+    if (err) return res.json({ Message: err });
+    if (result.length > 0) {
+      res.cookie("connectId", result[0].username, {
+        maxAge: 10000 * 60 * 60 * 24,
+        httpOnly: false,
+      });
+      console.log("User successfully logged in: " + result[0].username);
+      return res.json({ Login: true, username: req.cookies.connectId });
+    } else {
+      console.log("Wrong username or password");
+      return res.json({ Login: false });
+    }
+  });
+});
+// END LOGIN
+
+// REQ
+app.get("/reqcateg", (req, res) => {
+  const SQL = `SELECT * FROM category`;
+
+  db.query(SQL, (errCateg, categs) => {
+    if (errCateg) return res.json(errCateg);
+
+    return res.json(categs);
+  });
+});
+app.get("/reqlike/:user", (req, res) => {
+  const user = req.params.user;
+  const SQL = `SELECT idUser, idBlog FROM liked WHERE idUser = ?`;
+
+  db.query(SQL, [user], (errLike, likes) => {
+    if (errLike) return res.json(errLike);
+
+    return res.json(likes);
+  });
+});
+// REQ
+
+// HOME
+app.get("/home", (req, res) => {
+  const searchBy = req.query.search;
+  const sortBy = req.query.sortBy;
+
+  let SQL =
+    "SELECT b.*, u.username, u.id as idUser, u.avatar, c.name as category FROM blog b JOIN user u ON u.id = b.idUser JOIN category c ON c.id = b.idCategory ";
+  if (searchBy && searchBy != "") {
+    SQL += `WHERE b.title LIKE "%${searchBy}%" OR b.tag LIKE "%${searchBy}%" OR b.title LIKE "${searchBy}%" OR b.tag LIKE "${searchBy}%" OR b.title LIKE "%${searchBy}" OR b.tag LIKE "%${searchBy} "`;
+  }
+
+  switch (sortBy) {
+    case "date":
+      SQL += "ORDER BY releaseDate DESC";
+      break;
+    case "dateinv":
+      SQL += "ORDER BY releaseDate ASC";
+      break;
+
+    case "categ":
+      SQL += "ORDER BY b.idCategory DESC";
+      break;
+    case "categinv":
+      SQL += "ORDER BY b.idCategory ASC";
+      break;
+
+    default:
+      SQL += "ORDER BY releaseDate DESC";
+      break;
+  }
+
+  const SQLimg = `SELECT idBlog, name FROM blogimg bi JOIN blog b ON b.id = bi.idBlog`;
+
+  db.query(SQL, (errBlogs, blogs) => {
+    db.query(SQLimg, (errImage, blogsImages) => {
+      if (errBlogs) return res.json(errBlogs);
+      if (errImage) return res.json(errImage);
+
+      const result = {
+        blogs: blogs,
+        blogsImages: blogsImages,
+      };
+      return res.json(result);
+    });
+  });
+});
+app.get("/follow", (req, res) => {
+  const user = req.query.currentuser;
+  const searchBy = req.query.search;
+  const sortBy = req.query.sortBy;
+
+  let SQL = `SELECT b.*, u.username, u.id as idUser, u.avatar, c.name as category FROM blog b JOIN user u ON u.id = b.idUser JOIN category c ON c.id = b.idCategory JOIN follow f ON b.idUser = f.idFollowed WHERE f.idFollower = ${user} `;
+  if (searchBy && searchBy != "") {
+    SQL += `AND b.title LIKE "%${searchBy}%" OR b.tag LIKE "%${searchBy}%" OR b.title LIKE "${searchBy}%" OR b.tag LIKE "${searchBy}%" OR b.title LIKE "%${searchBy}" OR b.tag LIKE "%${searchBy} "`;
+  }
+
+  switch (sortBy) {
+    case "date":
+      SQL += "ORDER BY releaseDate DESC";
+      break;
+    case "dateinv":
+      SQL += "ORDER BY releaseDate ASC";
+      break;
+
+    case "categ":
+      SQL += "ORDER BY b.idCategory DESC";
+      break;
+    case "categinv":
+      SQL += "ORDER BY b.idCategory ASC";
+      break;
+
+    default:
+      SQL += "ORDER BY releaseDate DESC";
+      break;
+  }
+
+  const SQLimg = `SELECT idBlog, name FROM blogimg bi JOIN blog b ON b.id = bi.idBlog`;
+
+  db.query(SQL, (errBlogs, blogs) => {
+    db.query(SQLimg, (errImage, blogsImages) => {
+      if (errBlogs) return res.json(errBlogs);
+      if (errImage) return res.json(errImage);
+
+      const result = {
+        blogs: blogs,
+        blogsImages: blogsImages,
+      };
+      return res.json(result);
+    });
+  });
+});
+// END HOME
+
+// BLOG PAGE
+app.get("/blog/:id", (req, res) => {
+  const id = req.params.id;
+  const SQL = `SELECT b.*, u.username, u.id as idUser, u.avatar, c.name as category from blog b JOIN category C ON C.id = b.idCategory JOIN user u ON u.id = b.idUser WHERE b.id = ${id}`;
+  const SQLimg = `SELECT * FROM blogimg WHERE idBlog = ${id}`;
+  const SQLcomment = `SELECT C.*, U.username from blog b
+  INNER JOIN comment C on C.idBlog = b.id
+  INNER JOIN user U on U.id = C.idUser
+  WHERE b.id = ${id}`;
+
+  db.query(SQL, (errProd, blogDetail) => {
+    db.query(SQLimg, (errImage, blogImage) => {
+      db.query(SQLcomment, (errComment, blogComment) => {
+        if (errProd) return res.json(errProd);
+        if (errImage) return res.json(errImage);
+        if (errComment) return res.json(errComment);
+
+        const result = {
+          blogDetail: blogDetail,
+          blogImage: blogImage,
+          blogComment: blogComment,
+        };
+        return res.json(result);
+      });
+    });
+  });
+});
+app.post("/like/:user/:blog", (req, res) => {
+  const Values = [req.params.user, req.params.blog];
+  const SQLverif = `SELECT * FROM liked WHERE idUser = ? AND idblog = ?`;
+
+  let SQL;
+  let message = "Like successfully ";
+
+  db.query(SQLverif, Values, (err, results) => {
+    if (err) return res.send(err);
+
+    if (results.length > 0) {
+      SQL = "DELETE FROM `liked` WHERE idUser = ? AND idblog = ?";
+      message += "removed !";
     } else {
       SQL =
-        "UPDATE `prod` SET `name` = ?, `tag` = ?, `instrurapLink` = ?, `BPM` = ?, `key` = ?, `price` = ?, `releaseDate` = ?, `idTB` = ?";
-      Values = [
-        prod.name,
-        prod.tag,
-        prod.instrurapLink,
-        prod.BPM,
-        prod.key,
-        prod.price,
-        prod.releaseDate,
-        prod.idTB,
-      ];
-
-      if (files.cover) {
-        SQL += ", `cover` = ?";
-        Values.push(files.cover[0].originalname);
-      }
-
-      if (files.audio) {
-        SQL += ", `prodFile` = ?";
-        Values.push(files.audio[0].filename);
-      }
-
-      SQL += " WHERE `prod`.`id` = ?";
-      Values.push(prod.id);
-      message += "updated !";
+        "INSERT INTO `liked` (`id`, `idUser`, `idblog`) VALUES (NULL, ?, ?)";
+      message += "added !";
     }
 
-    db.query(SQL, Values, (err, results) => {
+    db.query(SQL, Values, (err, result) => {
       if (err) return res.send(err);
+
       console.log(message);
       return res.json(message);
     });
-  }
-);
-app.delete("/prod/:id", (req, res) => {
+  });
+});
+app.post("/newcomment", (req, res) => {
+  const comment = req.body;
+
+  const SQL =
+    "INSERT INTO `comment` (`id`, `text`, `idUser`, `idblog`) VALUES (NULL, ?, ?, ?)";
+  const Values = [comment.text, comment.idUser, comment.idBlog];
+  const message = "Comment successfully added !";
+
+  db.query(SQL, Values, (err, results) => {
+    if (err) return res.send(err);
+    console.log(message);
+    return res.json(message);
+  });
+});
+app.delete("/comment/:id", (req, res) => {
   const id = req.params.id;
 
-  const SQL = "DELETE FROM `prod` WHERE id = ?";
+  const SQL = "DELETE FROM `comment` WHERE id = ?";
+  const message = "Comment successfully removed !";
+
+  db.query(SQL, [id], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.send(err);
+    }
+
+    if (results.affectedRows === 0) {
+      console.log("No comment found with the provided ID.");
+      return res
+        .status(404)
+        .json({ error: "No comment found with the provided ID." });
+    }
+
+    console.log(message);
+    return res.json({ message });
+  });
+});
+// END BLOG PAGE
+
+// CATEGORY PAGE
+app.get("/category/:categoryName", (req, res) => {
+  const categoryName = req.params.categoryName;
+  const searchBy = req.query.search;
+  const sortBy = req.query.sortBy;
+
+  let SQL = `SELECT b.*, u.username, u.id as idUser, u.avatar, c.name as category  FROM blog b JOIN category c ON c.id = b.idCategory JOIN user u ON u.id = b.idUser WHERE c.name = '${categoryName}' `;
+  if (searchBy && searchBy != "") {
+    SQL += `AND (b.title LIKE "%${searchBy}%" OR b.tag LIKE "%${searchBy}%" OR b.title LIKE "${searchBy}%" OR b.tag LIKE "${searchBy}%" OR b.title LIKE "%${searchBy}" OR b.tag LIKE "%${searchBy} ")`;
+  }
+
+  switch (sortBy) {
+    case "date":
+      SQL += "ORDER BY releaseDate DESC";
+      break;
+    case "dateinv":
+      SQL += "ORDER BY releaseDate ASC";
+      break;
+
+    case "categ":
+      SQL += "ORDER BY b.idCategory DESC";
+      break;
+    case "categinv":
+      SQL += "ORDER BY b.idCategory ASC";
+      break;
+
+    default:
+      SQL += "ORDER BY releaseDate DESC";
+      break;
+  }
+
+  const SQLimg = `SELECT idBlog, name FROM blogimg bi JOIN blog b ON b.id = bi.idBlog`;
+
+  db.query(SQL, (errBlogs, blogs) => {
+    db.query(SQLimg, (errImage, blogsImages) => {
+      if (errBlogs) return res.json(errBlogs);
+      if (errImage) return res.json(errImage);
+
+      const result = {
+        blogs: blogs,
+        blogsImages: blogsImages,
+      };
+      return res.json(result);
+    });
+  });
+});
+// END CATEGORY PAGE
+
+// FOLLOWERS PAGE
+app.get("/followers", (req, res) => {
+  const user = req.query.currentuser;
+
+  const SQLiFollow = `SELECT u.id, u.username, u.avatar FROM user u JOIN follow f ON f.idFollowed = u.id WHERE f.idFollower = ?`;
+  const SQLfollowMe = `SELECT u.id, u.username, u.avatar FROM user u JOIN follow f ON f.idFollower = u.id WHERE f.idFollowed = ?`;
+
+  db.query(SQLiFollow, [user], (errIF, IF) => {
+    db.query(SQLfollowMe, [user], (errFM, FM) => {
+      if (errIF) return res.json(errIF);
+      if (errFM) return res.json(errFM);
+
+      const result = {
+        IF: IF,
+        FM: FM,
+      };
+      return res.json(result);
+    });
+  });
+});
+// END FOLLOWERS PAGE
+
+// LIKE PAGE
+app.get("/like", (req, res) => {
+  const user = req.query.currentuser;
+  const searchBy = req.query.search;
+  const sortBy = req.query.sortBy;
+
+  let SQL = `SELECT b.*, u.username, u.id as idUser, u.avatar, c.name as category FROM blog b JOIN user u ON u.id = b.idUser JOIN category c ON c.id = b.idCategory JOIN liked l ON b.id = l.idBlog WHERE l.idUser = ${user} `;
+  if (searchBy && searchBy != "") {
+    SQL += `AND (b.title LIKE "%${searchBy}%" OR b.tag LIKE "%${searchBy}%" OR b.title LIKE "${searchBy}%" OR b.tag LIKE "${searchBy}%" OR b.title LIKE "%${searchBy}" OR b.tag LIKE "%${searchBy} ")`;
+  }
+
+  switch (sortBy) {
+    case "date":
+      SQL += "ORDER BY releaseDate DESC";
+      break;
+    case "dateinv":
+      SQL += "ORDER BY releaseDate ASC";
+      break;
+
+    case "categ":
+      SQL += "ORDER BY b.idCategory DESC";
+      break;
+    case "categinv":
+      SQL += "ORDER BY b.idCategory ASC";
+      break;
+
+    default:
+      SQL += "ORDER BY releaseDate DESC";
+      break;
+  }
+
+  const SQLimg = `SELECT idBlog, name FROM blogimg bi JOIN blog b ON b.id = bi.idBlog`;
+
+  db.query(SQL, (errBlogs, blogs) => {
+    db.query(SQLimg, (errImage, blogsImages) => {
+      if (errBlogs) return res.json(errBlogs);
+      if (errImage) return res.json(errImage);
+
+      const result = {
+        blogs: blogs,
+        blogsImages: blogsImages,
+      };
+      return res.json(result);
+    });
+  });
+});
+// END LIKE PAGE
+
+// EDIT
+app.get("/edit/:user", (req, res) => {
+  const user = req.params.user;
+  const SQL = `SELECT b.*, u.username, u.id as idUser, u.avatar, c.name as category FROM blog b JOIN user u ON u.id = b.idUser JOIN category c ON c.id = b.idCategory WHERE b.idUser = ? ORDER BY b.id DESC`;
+  const SQLimg = `SELECT idBlog, name FROM blogimg bi JOIN blog b ON b.id = bi.idBlog JOIN user u ON u.id = b.idUser WHERE b.idUser = ?`;
+
+  db.query(SQL, [user], (errBlogs, myblogs) => {
+    db.query(SQLimg, [user], (errImage, myblogsImages) => {
+      if (errBlogs) return res.json(errBlogs);
+      if (errImage) return res.json(errImage);
+
+      const result = {
+        myblogs: myblogs,
+        myblogsImages: myblogsImages,
+      };
+      return res.json(result);
+    });
+  });
+});
+app.delete("/blog/:id", (req, res) => {
+  const id = req.params.id;
+
+  const SQL = "DELETE FROM `blog` WHERE id = ?";
   const message = "Prod successfully removed !";
 
   db.query(SQL, [id], (err, results) => {
@@ -646,39 +841,33 @@ app.delete("/prod/:id", (req, res) => {
     return res.json({ message });
   });
 });
+app.get("/editblog", (req, res) => {
+  const blog = req.query.blog;
+  const SQL = `SELECT b.*, u.username, u.id as idUser, u.avatar, c.name as category FROM blog b JOIN user u ON u.id = b.idUser JOIN category c ON c.id = b.idCategory WHERE b.id = ?`;
 
-// TODO: Type Beat / Playlist
-app.get("/alltypebeat", (req, res) => {
-  const id = req.query.id;
+  db.query(SQL, [blog], (errBlogs, myblog) => {
+    // db.query(SQLimg, (errImage, blogsImages) => {
+    if (errBlogs) return res.json(errBlogs);
+    // if (errImage) return res.json(errImage);
 
-  let SQL = "SELECT * FROM typebeat tb ";
-
-  if (id && id != 0) SQL += `WHERE tb.id = ${id} `;
-
-  SQL += "ORDER BY tb.id ASC;";
-
-  db.query(SQL, (err, data) => {
-    if (err) return res.json(err);
-
-    return res.json(data);
+    const result = {
+      myblogs: myblog,
+      // blogsImages: blogsImages,
+    };
+    return res.json(result);
+    // });
   });
 });
-app.post("/crudtypebeat", (req, res) => {
-  const typebeat = req.body.newTB;
 
-  let message = "Type Beat successfully ";
-  let SQL;
-  let Values;
+// EDIT BLOG
+app.post("/updateblog/:id", uploadhh.none(), (req, res) => {
+  const b = JSON.parse(req.body.newBlog);
+  const id = req.params.id;
+  // const files = req.files;
 
-  if (typebeat.id === 0) {
-    SQL = "INSERT INTO `typebeat` (`id`, `name`) VALUES (NULL, ?)";
-    Values = [typebeat.name];
-    message += "added !";
-  } else {
-    SQL = "UPDATE `typebeat` SET `name` = ? WHERE `typebeat`.`id` = ?";
-    Values = [typebeat.name, typebeat.id];
-    message += "updated !";
-  }
+  const SQL = `UPDATE blog SET title = ?, text = ?, tag = ?, idCategory = ? WHERE blog.id = ?`;
+  const Values = [b.title, b.text, b.tag, b.idCategory, id];
+  const message = "Blog successfully updated !";
 
   db.query(SQL, Values, (err, results) => {
     if (err) return res.send(err);
@@ -686,211 +875,35 @@ app.post("/crudtypebeat", (req, res) => {
     return res.json(message);
   });
 });
-app.delete("/playlist/:id", (req, res) => {
-  const id = req.params.id;
+// END EDIT BLOG
+// END EDIT
 
-  const SQL = "DELETE FROM `typebeat` WHERE id = ?";
-  let message;
+// U PAGE
+app.post("/follow/:user/:followed", (req, res) => {
+  const Values = [req.params.user, req.params.followed];
+  const SQLverif = `SELECT * FROM follow WHERE idFollower = ? AND idFollowed = ?`;
 
-  const SQLverif = "SELECT * FROM `prod` WHERE idTB = ?";
+  let SQL;
+  let message = "Follow successfully ";
 
-  db.query(SQLverif, [id], (err, results) => {
+  db.query(SQLverif, Values, (err, results) => {
+    if (err) return res.send(err);
+
     if (results.length > 0) {
-      message = "Some production have this Type Beat !";
-      console.log(message);
-      return res.json({ message });
+      SQL = "DELETE FROM `follow` WHERE idFollower = ? AND idFollowed = ?";
+      message += "removed !";
     } else {
-      db.query(SQL, [id], (err, results) => {
-        if (err) {
-          console.error(err);
-          return res.send(err);
-        }
-
-        if (results.affectedRows === 0) {
-          console.log("No Type Beat found with the provided ID.");
-          return res
-            .status(404)
-            .json({ error: "No Type Beat found with the provided ID." });
-        }
-        message = "Type Beat successfully removed !";
-        console.log("Recommendation successfully removed !");
-        return res.json({ message });
-      });
-    }
-  });
-});
-
-// TODO: Song Recommendation
-app.get("/allreco", (req, res) => {
-  const id = req.query.id;
-
-  let SQL =
-    "SELECT r.id, r.idArtist, r.song as songName, ra.name as artistName, r.beatmaker, r.ytLink as youtubeID, r.spotifyLink as spotifyID, ra.id as idArtist FROM recommendation r INNER JOIN recommendation_artist ra on r.idArtist = ra.id ";
-
-  if (id && id != 0) SQL += `WHERE r.id = ${id} `;
-
-  SQL += "ORDER BY r.id ASC;";
-
-  db.query(SQL, (err, data) => {
-    if (err) return res.json(err);
-
-    return res.json(data);
-  });
-});
-app.post("/crudSongReco", (req, res) => {
-  const song = req.body.song;
-
-  let message = "Song Recommendation successfully ";
-  let SQL;
-  let Values;
-
-  if (song.id === 0) {
-    SQL =
-      "INSERT INTO `recommendation` (`id`, `idArtist`, `song`, genre, beatmaker, ytLink, spotifyLink) VALUES (NULL, ?, ?, 'RAP', ?, ?, ? )";
-    Values = [
-      song.idArtist,
-      song.songName,
-      song.beatmaker,
-      song.youtubeID,
-      song.spotifyID,
-    ];
-    message += "added !";
-  } else {
-    SQL =
-      "UPDATE `recommendation` SET `idArtist` = ?, `song` = ?, `beatmaker` = ?, `ytLink` = ?, `spotifyLink` = ? WHERE `recommendation`.`id` = ?";
-    Values = [
-      song.idArtist,
-      song.songName,
-      song.beatmaker,
-      song.youtubeID,
-      song.spotifyID,
-      song.id,
-    ];
-    message += "updated !";
-  }
-
-  db.query(SQL, Values, (err, results) => {
-    if (err) return res.send(err);
-    console.log(message);
-    return res.json(message);
-  });
-});
-app.delete("/reco/:id", (req, res) => {
-  const id = req.params.id;
-
-  const SQL = "DELETE FROM `recommendation` WHERE id = ?";
-  const message = "Recommendation successfully removed !";
-
-  db.query(SQL, [id], (err, results) => {
-    if (err) {
-      console.error(err);
-      return res.send(err);
-    }
-
-    if (results.affectedRows === 0) {
-      console.log("No recommendation found with the provided ID.");
-      return res
-        .status(404)
-        .json({ error: "No recommendation found with the provided ID." });
-    }
-
-    console.log(message);
-    return res.json({ message });
-  });
-});
-
-// TODO: Artist Recommendation
-app.get("/allartistreco", (req, res) => {
-  const id = req.query.id;
-
-  let SQL = "SELECT id, name as artistName, img FROM `recommendation_artist` ";
-
-  if (id && id != 0) SQL += `WHERE id = ${id} `;
-
-  SQL += "ORDER BY id ASC;";
-
-  db.query(SQL, (err, data) => {
-    if (err) return res.json(err);
-
-    return res.json(data);
-  });
-});
-app.post("/crudArtistReco", uploadNewReco.single("file"), (req, res) => {
-  const artist = JSON.parse(req.body.artist);
-
-  let message = "Artist Recommendation successfully ";
-  let SQL;
-  let Values;
-
-  if (req.file) {
-    if (artist.id === 0) {
       SQL =
-        "INSERT INTO `recommendation_artist` (`id`, `name`, `img`) VALUES (NULL, ?, ?)";
-      Values = [artist.artistName, req.file.originalname];
+        "INSERT INTO `follow` (`id`, `idFollower`, `idFollowed`) VALUES (NULL, ?, ?)";
       message += "added !";
-    } else {
-      SQL = `UPDATE recommendation_artist SET name = ?, img = ? WHERE recommendation_artist.id = ?`;
-      Values = [artist.artistName, req.file.originalname, artist.id];
-      message += "updated !";
-    }
-  } else {
-    SQL = `UPDATE recommendation_artist SET name = ? WHERE recommendation_artist.id = ?`;
-    Values = [artist.artistName, artist.id];
-    message += "updated !";
-  }
-
-  db.query(SQL, Values, (err, results) => {
-    if (err) return res.send(err);
-    console.log(message);
-    return res.json(message);
-  });
-});
-app.delete("/artistreco/:id", (req, res) => {
-  const id = req.params.id;
-
-  const SQL = "DELETE FROM `recommendation_artist` WHERE id = ?";
-  const message = "Artist Recommendation successfully removed !";
-
-  db.query(SQL, [id], (err, results) => {
-    if (err) {
-      console.error(err);
-      return res.send(err);
     }
 
-    if (results.affectedRows === 0) {
-      console.log("No artist found with the provided ID.");
-      return res
-        .status(404)
-        .json({ error: "No artist found with the provided ID." });
-    }
+    db.query(SQL, Values, (err, result) => {
+      if (err) return res.send(err);
 
-    console.log(message);
-    return res.json({ message });
+      console.log(message);
+      return res.json(message);
+    });
   });
 });
-
-
-
-
-// TODO: FINI
-app.get("/home", (req, res) => {
-  const SQLPlaylist =
-    "SELECT b.*, u.username, u.id as idUser, u.avatar, c.name as category FROM blog b JOIN user u ON u.id = b.idUser JOIN category c ON c.id = b.idCategory  ORDER BY releaseDate DESC";
-
-  db.query(SQLPlaylist, (errPlaylist, blogs) => {
-    if (errPlaylist) return res.json(errPlaylist);
-
-    return res.json(blogs);
-  });
-});
-
-app.get("/follow", (req, res) => {
-  const user = req.query.currentuser;
-  const SQLPlaylist = `SELECT b.*, u.username, u.id as idUser, u.avatar, c.name as category FROM blog b JOIN user u ON u.id = b.idUser JOIN category c ON c.id = b.idCategory JOIN follow f ON b.idUser = f.idFollowed WHERE f.idFollower = ${user} ORDER BY releaseDate DESC;`;
-
-  db.query(SQLPlaylist, (errPlaylist, blogs) => {
-    if (errPlaylist) return res.json(errPlaylist);
-
-    return res.json(blogs);
-  });
-});
+// END U PAGE

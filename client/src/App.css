@@ -47,9 +47,14 @@ video {
   align-items: center;
   background: var(--bgColor);
   box-shadow: 2px 2px 8px var(--greyText);
+  overflow: hidden;
 
   .mainContent {
     width: 100%;
+    height: 100%;
+    overflow: auto;
+    margin-top: 2rem;
+    overflow: hidden;
   }
 }
 
@@ -90,7 +95,7 @@ video {
     border: 1px solid var(--primaryColor);
 
     .icon {
-      color: var(--primaryColor);
+      /* color: var(--primaryColor); */
       transform: translateX(3px);
       transition: 0.3s ease;
     }

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import Top from "./Top/Top";
 import Bento from "./Bento/Bento";
-import Sidebar from "../assets/Topbar/Topbar";
+import Sidebar from "../assets/Topbar/HomeTopbar/HomeTopbar";
 import Recommendation from "../assets/Recommendation/Recommendation";
 
 import "./Shop.css";

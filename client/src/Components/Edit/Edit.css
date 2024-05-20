@@ -1,0 +1,248 @@
+.mainContent {
+  p.title {
+    font-weight: 700;
+    text-decoration: underline;
+  }
+}
+
+/* table */
+
+.tableInfo {
+  width: 70vw;
+  justify-content: start;
+
+  button.add {
+    border: 1px solid var(--primarySecondColor);
+    position: absolute;
+    transform: translateX(-8rem);
+  }
+
+  table {
+    overflow: hidden;
+    border-collapse: collapse;
+    border: 2px solid rgb(140 140 140);
+    font-family: sans-serif;
+    font-size: 0.8rem;
+    transform: translateX(-6rem);
+  }
+
+  .tags {
+    max-width: 10vw;
+    white-space: nowrap;
+    overflow: auto;
+    flex-wrap: wrap;
+
+    p {
+      font-weight: 600;
+      font-size: var(--smallestFontSize);
+      text-align: center;
+      padding: 0.5vw;
+      margin: 0.25vh 0.25vw;
+      border-radius: 1vw;
+      background-color: var(--primarySecondColor);
+    }
+  }
+
+  caption {
+    caption-side: bottom;
+    padding: 10px;
+    font-weight: bold;
+  }
+
+  thead {
+    background-color: rgb(228 240 245);
+  }
+
+  tbody > tr:nth-of-type(even) {
+    background-color: rgb(237 238 242);
+  }
+
+  th,
+  td {
+    padding: 0.5vh 0.5vw;
+
+    img.square {
+      width: 10vw;
+      height: 10vw;
+    }
+  }
+
+  tr {
+    background-color: var(--whiteColor);
+  }
+
+  .start {
+    background-color: var(--hoverColor);
+
+    .click {
+      cursor: pointer;
+    }
+
+    th {
+      border: 1px solid rgb(160 160 160);
+    }
+
+    &:hover {
+      border: none !important;
+    }
+  }
+
+  .hovered {
+    tbody > tr:nth-of-type(even):hover {
+      background-color: var(--hoverColor);
+    }
+
+    tr:hover {
+      background-color: var(--hoverColor);
+      border: 2px dashed black;
+    }
+  }
+
+  td:last-of-type {
+    text-align: center;
+  }
+}
+
+.editBlog {
+  .btn {
+    width: 5rem !important;
+    height: 5rem !important;
+    scale: 0.5;
+    position: fixed;
+
+    &.close {
+      top: 5rem;
+      left: 1rem;
+    }
+
+    &.send {
+      bottom: 5rem;
+      right: 1rem;
+      width: 20rem !important;
+      font-size: var(--h1FontSize);
+    }
+  }
+
+  .exemple {
+    .thisBlog {
+      overflow: hidden;
+
+      ::-webkit-scrollbar {
+        display: block !important;
+        width: 0.5rem !important;
+        height: 0.5rem !important;
+      }
+      ::-webkit-scrollbar-thumb {
+        display: block !important;
+        background-color: var(--primaryColor) !important;
+        border-radius: 0.5rem;
+      }
+      ::-webkit-scrollbar-track {
+        display: block !important;
+        background-color: var(--primarySecondColor) !important;
+        border-radius: 0.5rem;
+      }
+
+      .blogContent {
+        padding: 1rem;
+        width: 55vw;
+        border-radius: 1rem 0 0 1rem;
+        height: 85vh;
+        background: var(--bgColor);
+        overflow: hidden scroll;
+
+        .head {
+          justify-content: space-between;
+        }
+
+        .author {
+          justify-content: space-between;
+          font-size: var(--normalFontSize);
+          font-weight: 500;
+
+          .avatar {
+            background: var(--hoverColor);
+            width: 5rem;
+            height: 5rem;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.3s ease;
+
+            img {
+              width: 4.25rem;
+              height: 4.25rem;
+              object-fit: cover;
+              border-radius: 50%;
+            }
+
+            &:hover {
+              background-color: var(--greyText);
+            }
+          }
+
+          .dateName {
+            width: fit-content;
+            margin-right: 1rem;
+
+            .date {
+              color: var(--greyText);
+              font-size: var(--normalFontSize);
+            }
+
+            .name {
+              cursor: pointer;
+              font-weight: 600;
+              margin: 0.5rem 0 0;
+              text-align: end;
+              font-size: var(--h3FontSize);
+
+              &:hover {
+                text-decoration: underline;
+              }
+            }
+          }
+        }
+
+        h1 {
+          font-size: var(--h1FontSize);
+          text-decoration: underline;
+          margin-bottom: 2rem;
+        }
+
+        p {
+          margin-bottom: 1rem;
+        }
+
+        .slide {
+          img {
+            height: 34rem;
+            width: auto;
+          }
+        }
+
+        .tag{
+          font-weight: 600;
+          font-size: var(--smallFontSize);
+          text-align: center;
+          padding: .5vw 1vw;
+          margin: 0.25vh 0.25vw;
+        }
+
+        
+        .info {
+          font-weight: 500;
+          transform: translate(0.25rem, 0.25rem);
+          font-size: 10px;
+          cursor: pointer;
+  
+          &:hover {
+            color: blue;
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}

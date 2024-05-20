@@ -4,15 +4,15 @@ import {
   IconInfoSquareRounded,
   IconUser,
   IconLogout,
+  IconUserPlus,
 } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { UserInfo, UserVisit } from "../../../utils/type";
 
-import Axios from "axios";
-import Top from "./Top/Top";
+import axios from "axios";
 import Cookies from "js-cookie";
-import Topbar from "../../assets/Topbar/Topbar";
+import Topbar from "../../assets/Topbar/Topbar/Topbar";
 
 import "./U.css";
 
@@ -57,7 +57,7 @@ const U = ({ userInfo }: { userInfo: UserInfo }) => {
 
   const editUser = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    Axios.post("http://localhost:8081/editu", {
+    axios.post("http://localhost:8081/editu", {
       Username: newUsername,
       Detail: newDetail,
       Id: userInfo ? userInfo?.id : "",
@@ -75,17 +75,20 @@ const U = ({ userInfo }: { userInfo: UserInfo }) => {
     navigateTo("/login");
   };
 
+  const follow = async (e: number) => {
+    console.log(e)
+    try {
+      await axios.post(`http://localhost:8081/follow/${userInfo.id}/${e}`);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   return (
     <div className="container">
       <Topbar {...{ userInfo }} />
       <div className="mainContent">
-        {userVisit != null ? (
-          <>
-            <Top {...{ userInfo, userVisit, id }} />
-          </>
-        ) : (
-          <></>
-        )}
         <div className="bottom flex">
           {userInfo && userVisit?.id == userInfo.id ? (
             <button
@@ -155,13 +158,6 @@ const U = ({ userInfo }: { userInfo: UserInfo }) => {
                   </div>
                 ) : (
                   <>
-                    <IconUser
-                      className="icn"
-                      style={{
-                        color: userVisit.color,
-                        marginBottom: "1rem",
-                      }}
-                    />
                     <h3>Username</h3>
                     <p className="info">{userVisit.username}</p>
                     <h3>Detail</h3>
@@ -176,13 +172,16 @@ const U = ({ userInfo }: { userInfo: UserInfo }) => {
             )}
             {displayEdit ? (
               <></>
+            ) : userVisit.id == userInfo.id ? (
+              <button className="btn flex" onClick={logout}>
+                <span>Logout</span>
+                <IconLogout className="icon" />
+              </button>
             ) : (
-              userVisit.id == userInfo.id && (
-                <button className="btn flex" onClick={logout}>
-                  <span>Logout</span>
-                  <IconLogout className="icon" />
-                </button>
-              )
+              <button className="btn flex" onClick={() => follow(userVisit.id)}>
+                <span>Follow {userVisit.username}</span>
+                <IconUserPlus className="icon" />
+              </button>
             )}
           </div>
         </div>
