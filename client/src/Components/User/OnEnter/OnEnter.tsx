@@ -1,10 +1,24 @@
-import { Link } from "react-router-dom";
-
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { IconUserPlus, IconUser } from "@tabler/icons-react";
+
+import axios from "axios";
 
 import "../User.css";
 
 const OnEnter = () => {
+  const navigateTo = useNavigate();
+  
+  useEffect(() => {
+    axios.get("http://localhost:8081/user").then((res) => {
+      if (res.data.valid === true) {
+        navigateTo("/home");
+      } else {
+        navigateTo("/login");
+      }
+    });
+  }, [navigateTo]);
+
   return (
     <div className="onEnterPage flex">
       <div className="container flex">
@@ -19,7 +33,7 @@ const OnEnter = () => {
           </div>
           <div className="footerDiv flex">
             <span className="text">
-              You need to be logged for enter in the shop.
+              You need to be logged for enter in the Blog Universe.
             </span>
             <Link to="/login">
               <button className="btn">Login</button>

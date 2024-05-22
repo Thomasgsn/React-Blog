@@ -28,7 +28,7 @@ const Login = () => {
 
     try {
       await axios.post("http://localhost:8081/login", user);
-      navigateTo("/home");
+      window.location.reload();
     } catch (error) {
       alert(`Error in id or password`);
       console.error("Error:", error);

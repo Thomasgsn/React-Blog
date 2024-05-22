@@ -8,7 +8,7 @@ import Register from "./Components/User/Register/Register";
 
 import Home from "./Components/Home/Home";
 import Followers from "./Components/Followers/Followers";
-
+import Add from "./Components/Add/Add";
 import Edit from "./Components/Edit/Edit";
 import Like from "./Components/Like/Like";
 
@@ -61,6 +61,11 @@ function App() {
     }
   }, [id]);
 
+  const Loading = () => {
+    window.location.reload;
+    return <Loader />;
+  };
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -76,16 +81,21 @@ function App() {
     },
     {
       path: "/home",
-      element: userInfo.id != 0 ? <Home {...{ userInfo }} /> : <Loader />,
+      element: <Home {...{ userInfo }} />,
     },
     {
       path: "/followers",
       element: <Followers {...{ userInfo }} />,
     },
     {
+      path: "/add",
+      element: <Add {...{ userInfo }} />,
+    },
+    {
       path: "/edit",
       element: <Edit {...{ userInfo }} />,
     },
+
     {
       path: "/like",
       element: <Like {...{ userInfo }} />,

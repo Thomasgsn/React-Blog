@@ -40,7 +40,7 @@ const Topbar = ({ userInfo }: { userInfo: UserInfo }) => {
           />
         </a>
 
-        <a href="/home" className="link flex">
+        <a href="/add" className="link flex">
           <IconPlus
             size={24}
             className="icon"

@@ -119,8 +119,14 @@
 
           &.like {
             margin-left: 0.5rem;
+            background: transparent;
             width: fit-content;
             height: fit-content;
+
+            .isLiked {
+              fill: var(--primaryColor);
+              stroke: var(--primaryColor);
+            }
 
             &:hover {
               background: transparent;

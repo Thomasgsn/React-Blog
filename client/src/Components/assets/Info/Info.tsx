@@ -1,5 +1,3 @@
-import { BlogInfo } from "../../../utils/type";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import {
   IconArrowDown,
   IconArrowRight,
@@ -7,6 +5,8 @@ import {
   IconSeparator,
   IconX,
 } from "@tabler/icons-react";
+import { BlogInfo } from "../../../utils/type";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
 import "./Info.css";
 
@@ -141,7 +141,10 @@ const Info = ({
                 </button>
               ))}
           </div>
-          {window.location.href.split("/")[3] !== "like" && (
+          {window.location.href.split("/")[3] == "like" ||
+          window.location.href.split("/")[3] == "u" ? (
+            <></>
+          ) : (
             <>
               <p>Category :</p>
               <div className="categoryBy">

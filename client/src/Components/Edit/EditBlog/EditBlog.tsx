@@ -1,10 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { BlogInfo, Category } from "../../../utils/type";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { IconSend, IconX } from "@tabler/icons-react";
+import { BlogImage, BlogInfo, Category } from "../../../utils/type";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import axios from "axios";
-import { Carousel } from "react-responsive-carousel";
 
 interface BlogDate {
   releaseDate: string;
@@ -12,12 +11,19 @@ interface BlogDate {
 
 interface EditProps {
   myBlogs: BlogInfo[];
+  myBlogsImg: BlogImage[];
   idEdit: number;
   setIdEdit: Dispatch<SetStateAction<number>>;
   setEdit: Dispatch<SetStateAction<boolean>>;
 }
 
-const Edit: React.FC<EditProps> = ({ myBlogs, idEdit, setIdEdit, setEdit }) => {
+const Edit: React.FC<EditProps> = ({
+  myBlogs,
+  myBlogsImg,
+  idEdit,
+  setIdEdit,
+  setEdit,
+}) => {
   const navigateTo = useNavigate();
 
   const [category, setCategs] = useState<Category[]>([]);
@@ -35,8 +41,27 @@ const Edit: React.FC<EditProps> = ({ myBlogs, idEdit, setIdEdit, setEdit }) => {
     image: [],
   });
 
-  const [coverFile, setCoverFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [file1, setFile1] = useState<File | null>(null);
+  const [file2, setFile2] = useState<File | null>(null);
+  const [file3, setFile3] = useState<File | null>(null);
+  const [file4, setFile4] = useState<File | null>(null);
+  const [file5, setFile5] = useState<File | null>(null);
+
+  const [imagePreview1, setPreview1] = useState<string | undefined>(
+    myBlogsImg[0] ? `/blogs/${myBlogsImg[0].name}` : undefined
+  );
+  const [imagePreview2, setPreview2] = useState<string | undefined>(
+    myBlogsImg[1] ? `/blogs/${myBlogsImg[1].name}` : undefined
+  );
+  const [imagePreview3, setPreview3] = useState<string | undefined>(
+    myBlogsImg[2] ? `/blogs/${myBlogsImg[2].name}` : undefined
+  );
+  const [imagePreview4, setPreview4] = useState<string | undefined>(
+    myBlogsImg[3] ? `/blogs/${myBlogsImg[3].name}` : undefined
+  );
+  const [imagePreview5, setPreview5] = useState<string | undefined>(
+    myBlogsImg[4] ? `/blogs/${myBlogsImg[4].name}` : undefined
+  );
 
   useEffect(() => {
     const fetchTypeBeat = async () => {
@@ -56,7 +81,11 @@ const Edit: React.FC<EditProps> = ({ myBlogs, idEdit, setIdEdit, setEdit }) => {
     }
   }, [myBlogs]);
 
-  const handleCoverChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    setFile: React.Dispatch<React.SetStateAction<File | null>>,
+    setPreview: React.Dispatch<React.SetStateAction<string | undefined>>
+  ) => {
     const fileList = event.target.files;
     if (fileList && fileList.length > 0) {
       const selectedFile = fileList[0];
@@ -67,13 +96,13 @@ const Edit: React.FC<EditProps> = ({ myBlogs, idEdit, setIdEdit, setEdit }) => {
         return;
       }
 
-      setCoverFile(selectedFile);
-
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result as string);
+        setPreview(reader.result as string);
       };
       reader.readAsDataURL(selectedFile);
+
+      setFile(selectedFile);
     }
   };
 
@@ -90,9 +119,21 @@ const Edit: React.FC<EditProps> = ({ myBlogs, idEdit, setIdEdit, setEdit }) => {
     const formData = new FormData();
     formData.append("newBlog", JSON.stringify(newBlog));
 
-    // if (coverFile) {
-    //   formData.append("cover", coverFile);
-    // }
+    if (file1) {
+      formData.append("image", file1);
+      if (file2) {
+        formData.append("image", file2);
+        if (file3) {
+          formData.append("image", file3);
+          if (file4) {
+            formData.append("image", file4);
+            if (file5) {
+              formData.append("image", file5);
+            }
+          }
+        }
+      }
+    }
 
     try {
       await axios.post(`http://localhost:8081/updateblog/${idEdit}`, formData);
@@ -103,8 +144,13 @@ const Edit: React.FC<EditProps> = ({ myBlogs, idEdit, setIdEdit, setEdit }) => {
   };
 
   const handleClose = () => {
-    setEdit(false);
-    setIdEdit(0);
+    const confirmClose = window.confirm(
+      "Are you sure to delete modification ?"
+    );
+    if (confirmClose) {
+      setEdit(false);
+      setIdEdit(0);
+    }
   };
 
   const thisYear = new Date().getFullYear();
@@ -141,6 +187,9 @@ const Edit: React.FC<EditProps> = ({ myBlogs, idEdit, setIdEdit, setEdit }) => {
 
   return (
     <div className="editBlog">
+      <button className="btn" onClick={() => console.log(myBlogsImg)}>
+        text
+      </button>
       <button className="btn close" onClick={handleClose}>
         <IconX size={50} />
       </button>
@@ -233,13 +282,86 @@ const Edit: React.FC<EditProps> = ({ myBlogs, idEdit, setIdEdit, setEdit }) => {
             >
               separate each beatmaker with ;
             </p>
-            {/* <Carousel autoPlay dynamicHeight infiniteLoop>
-            {newBlog.image.map((img, index) => (
-              <div key={index}>
-                <img src={`/blogs/${img.name}`} alt={newBlog.title} />
+            <div className="image">
+              <div className="flex">
+                <label htmlFor="file1">
+                  {imagePreview1 ? "Change" : "Choose"} the first Image
+                </label>
+                <input
+                  id="file1"
+                  type="file"
+                  className="input-file"
+                  onChange={(e) => handleImageChange(e, setFile1, setPreview1)}
+                />
+                <label htmlFor="file2" className={imagePreview1 ? "" : "disabled"}>
+                  {imagePreview2 ? "Change" : "Choose"} the second Image
+                </label>
+                <input
+                  id="file2"
+                  type="file"
+                  disabled={!imagePreview1}
+                  className="input-file"
+                  onChange={(e) => handleImageChange(e, setFile2, setPreview2)}
+                />
+                <label htmlFor="file3" className={imagePreview2 ? "" : "disabled"}>
+                  {imagePreview3 ? "Change" : "Choose"} the third Image
+                </label>
+                <input
+                  id="file3"
+                  type="file"
+                  disabled={!imagePreview2}
+                  className="input-file"
+                  onChange={(e) => handleImageChange(e, setFile3, setPreview3)}
+                />
+                <label htmlFor="file4" className={imagePreview3 ? "" : "disabled"}>
+                  {imagePreview4 ? "Change" : "Choose"} the fourth Image
+                </label>
+                <input
+                  id="file4"
+                  type="file"
+                  disabled={!imagePreview3}
+                  className="input-file"
+                  onChange={(e) => handleImageChange(e, setFile4, setPreview4)}
+                />
+                <label htmlFor="file5" className={imagePreview4 ? "" : "disabled"}>
+                  {imagePreview5 ? "Change" : "Choose"} the fifth Image
+                </label>
+                <input
+                  id="file5"
+                  type="file"
+                  disabled={!imagePreview4}
+                  className="input-file"
+                  onChange={(e) => handleImageChange(e, setFile5, setPreview5)}
+                />
               </div>
-            ))}
-          </Carousel> */}
+              <div className="imagePreview flex">
+                <div>
+                  {imagePreview1 && (
+                    <img src={imagePreview1} alt="previewImage1" />
+                  )}
+                </div>
+                <div>
+                  {imagePreview2 && (
+                    <img src={imagePreview2} alt="previewImage2" />
+                  )}
+                </div>
+                <div>
+                  {imagePreview3 && (
+                    <img src={imagePreview3} alt="previewImage3" />
+                  )}
+                </div>
+                <div>
+                  {imagePreview4 && (
+                    <img src={imagePreview4} alt="previewImage4" />
+                  )}
+                </div>
+                <div>
+                  {imagePreview5 && (
+                    <img src={imagePreview5} alt="previewImage5" />
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

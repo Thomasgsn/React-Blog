@@ -79,7 +79,21 @@ const SelectedBlogs = ({
   const like = async (e: number) => {
     try {
       await axios.post(`http://localhost:8081/like/${userInfo.id}/${e}`);
-      window.location.reload();
+      const newLike = { idUser: userInfo.id, idBlog: e };
+      setLiked((prevLikedItems) => {
+        const isLiked = prevLikedItems.find(
+          (like) =>
+            like.idUser === newLike.idUser && like.idBlog === newLike.idBlog
+        );
+        if (isLiked) {
+          return prevLikedItems.filter(
+            (like) =>
+              like.idUser !== newLike.idUser || like.idBlog !== newLike.idBlog
+          );
+        } else {
+          return [...prevLikedItems, newLike];
+        }
+      });
     } catch (error) {
       console.error("Error:", error);
     }
@@ -131,8 +145,7 @@ const SelectedBlogs = ({
                 <div className="seeMore flex">
                   <div className="btn flex like" onClick={() => like(b.id)}>
                     <IconHeart
-                      className="icn"
-                      fill={isLiked(b.id) ? "var(--primaryColor)" : "none"}
+                      className={isLiked(b.id) ? "icn isLiked" : "icn"}
                     />
                   </div>
                   <a className="btn flex goBlog" href={`/blog/${b.id}`}>

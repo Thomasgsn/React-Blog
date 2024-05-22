@@ -5,6 +5,17 @@
   }
 }
 
+.btn {
+  background: var(--primaryColor);
+  color: var(--blackColor);
+
+  &:hover{
+    background: var(--primaryColor);
+    color: var(--whiteColor);
+  }
+}
+
+
 /* table */
 
 .tableInfo {

@@ -1,0 +1,60 @@
+.mainContent {
+  p.title {
+    font-weight: 700;
+    text-decoration: underline;
+  }
+
+  .btn {
+    background: var(--primaryColor);
+    color: var(--blackColor);
+
+    &:hover{
+      background: var(--primaryColor);
+      color: var(--whiteColor);
+    }
+  }
+
+  .image {
+    label {
+      cursor: pointer;
+      font-weight: 600;
+      padding: 0.5rem 0.8rem;
+      transition: all 0.2s ease;
+      background: var(--primaryColor);
+      font-size: var(--smallestFontSize);
+      margin: 0 0.5rem;
+      border-radius: 0.65rem;
+
+      &.disabled {
+        background: var(--greyText);
+        color: grey;
+        cursor: not-allowed;
+        &:hover {
+          color: grey;
+        }
+      }
+
+      &:hover {
+        color: var(--whiteColor);
+      }
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .imagePreview {
+      margin-top: 1rem;
+      justify-content: space-between;
+
+      div {
+        width: 19.5%;
+
+        img {
+          width: 100%;
+          height: auto;
+        }
+      }
+    }
+  }
+}

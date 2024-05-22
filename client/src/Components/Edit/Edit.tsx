@@ -40,10 +40,13 @@ const Edit = ({ userInfo }: { userInfo: UserInfo }) => {
   }, [idEdit, userInfo.id]);
 
   const handleDelete = async (id: number) => {
-    try {
-      await axios.delete(`http://localhost:8081/blog/${id}`);
-    } catch (err) {
-      console.error(err);
+    const confirmDelete = window.confirm("Are you sure to delete this Blog ?");
+    if (confirmDelete) {
+      try {
+        await axios.delete(`http://localhost:8081/blog/${id}`);
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 
@@ -112,15 +115,7 @@ const Edit = ({ userInfo }: { userInfo: UserInfo }) => {
                         className="icon"
                       />
                       <IconEraser
-                        onClick={() => {
-                          if (
-                            window.confirm(
-                              "Are you sure you want to delete this item ?"
-                            )
-                          ) {
-                            handleDelete(b.id);
-                          }
-                        }}
+                        onClick={() => handleDelete(b.id)}
                         className="icon"
                       />
                     </td>
@@ -138,7 +133,7 @@ const Edit = ({ userInfo }: { userInfo: UserInfo }) => {
         );
       }
     } else {
-      return <EditBlog {...{ myBlogs, idEdit, setIdEdit, setEdit }} />;
+      return <EditBlog {...{ myBlogs, myBlogsImg, idEdit, setIdEdit, setEdit }} />;
     }
   };
 
@@ -146,7 +141,7 @@ const Edit = ({ userInfo }: { userInfo: UserInfo }) => {
     <div className="container">
       <Topbar {...{ userInfo }} />
       <div className="mainContent">
-        <p className="title">Blog Edit</p>
+        <p className="title">Edit Blog</p>
         <div className="bottom flex">
           <Content />
         </div>

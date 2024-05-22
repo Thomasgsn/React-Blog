@@ -6,7 +6,7 @@ import {
   IconPhoto,
   IconFileInfo,
 } from "@tabler/icons-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import "../User.css";
@@ -29,6 +29,16 @@ const Register = () => {
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    axios.get("http://localhost:8081/user").then((res) => {
+      if (res.data.valid === true) {
+        navigateTo("/home");
+      } else {
+        navigateTo("/login");
+      }
+    });
+  }, [navigateTo]);
 
   const [file, setFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);

@@ -39,20 +39,6 @@ export interface Category {
   name: string;
 }
 
-export interface SongReco {
-  id: number;
-  song: string;
-  genre: string;
-  beatmaker: string;
-  ytLink: string;
-  spotifyLink: string;
-}
-
-export interface ArtistReco {
-  id: number;
-  name: string;
-  img: string;
-}
 
 export interface UserVisit {
   id: number;
