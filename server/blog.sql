@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mer. 22 mai 2024 à 15:19
+-- Généré le : mer. 22 mai 2024 à 20:33
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -198,7 +198,8 @@ INSERT INTO `comment` (`id`, `text`, `idUser`, `idBlog`) VALUES
 (19, 'comment', 10, 31),
 (18, 'test comment', 10, 31),
 (20, '<script>alert(\'Ceci est une attaque XSS!\');</script>', 11, 31),
-(21, 'Why nobody comment ?', 12, 36);
+(21, 'Why nobody comment ?', 12, 36),
+(22, 'I comment', 7, 36);
 
 -- --------------------------------------------------------
 
@@ -359,7 +360,7 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT pour la table `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT pour la table `follow`
