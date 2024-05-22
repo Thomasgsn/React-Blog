@@ -78,21 +78,37 @@ const Topbar = ({ userInfo }: { userInfo: UserInfo }) => {
       </div>
       <div className="user flex">
         {userInfo.role === "admin" && (
-          <span style={{ color: "red", fontWeight: '700' }}>ADMIN</span>
+          <span style={{ color: "red", fontWeight: "700" }}>ADMIN</span>
         )}
         <span className="name">
-          <a href={`/u/${userInfo.id}`}>
-            {userInfo.firstname} {userInfo.lastname}
-          </a>
+          {userInfo.firstname ? (
+            <a href={`/u/${userInfo.id}`}>
+              {userInfo.firstname} {userInfo.lastname}
+            </a>
+          ) : (
+            <div className="flex">
+              <a href={`/login`}>
+                <span style={{ fontWeight: "700" }}>LOGIN</span>
+              </a>
+              <p>or</p>
+              <a href={`/register`}>
+                <span style={{ fontWeight: "700", marginLeft: ".5rem" }}>
+                  REGISTER
+                </span>
+              </a>
+            </div>
+          )}
         </span>
-        <a href={`/u/${userInfo.id}`}>
-          <div className="avatar flex">
-            <img
-              src={`/avatars/${userInfo.avatar}`}
-              alt={`${userInfo.username} avatar`}
-            />
-          </div>
-        </a>
+        {userInfo.avatar && (
+          <a href={userInfo.avatar ? `/u/${userInfo.id}` : "/login"}>
+            <div className="avatar flex">
+              <img
+                src={`/avatars/${userInfo.avatar}`}
+                alt={`${userInfo.username} avatar`}
+              />
+            </div>
+          </a>
+        )}
       </div>
     </div>
   );
