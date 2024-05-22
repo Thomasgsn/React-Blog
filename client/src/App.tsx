@@ -1,6 +1,9 @@
 import { UserInfo } from "./utils/type";
 import { useEffect, useState } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 
 import OnEnter from "./Components/User/OnEnter/OnEnter";
 import Login from "./Components/User/Login/Login";
@@ -17,7 +20,6 @@ import Category from "./Components/Category/Category";
 import U from "./Components/User/U/U";
 
 import axios from "axios";
-import Loader from "./utils/Loader";
 
 import "./App.css";
 
@@ -60,11 +62,6 @@ function App() {
         });
     }
   }, [id]);
-
-  const Loading = () => {
-    window.location.reload;
-    return <Loader />;
-  };
 
   const router = createBrowserRouter([
     {

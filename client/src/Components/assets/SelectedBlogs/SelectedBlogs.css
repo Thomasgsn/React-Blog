@@ -9,7 +9,6 @@
 
     .info {
       background-color: var(--whiteColor);
-      border-radius: 1rem 1rem 0 0;
       flex-direction: column;
 
       .author {
@@ -111,7 +110,6 @@
           width: 5rem;
           height: 1rem;
           font-size: 0.75rem;
-          font-weight: normal;
           white-space: nowrap;
           border: none;
           border-radius: 5rem;
@@ -136,10 +134,15 @@
             }
           }
 
-          &.goBlog:hover {
-            font-weight: 600;
-            color: var(--whiteColor);
-            background-color: var(--primaryColor);
+          &.goBlog {
+            margin-right: 0.75rem;
+            font-weight: 650;
+
+            &:hover {
+              font-weight: 600;
+              color: var(--whiteColor);
+              background-color: var(--primaryColor);
+            }
           }
         }
       }

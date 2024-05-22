@@ -77,6 +77,9 @@ const Topbar = ({ userInfo }: { userInfo: UserInfo }) => {
         </a>
       </div>
       <div className="user flex">
+        {userInfo.role === "admin" && (
+          <span style={{ color: "red", fontWeight: '700' }}>ADMIN</span>
+        )}
         <span className="name">
           <a href={`/u/${userInfo.id}`}>
             {userInfo.firstname} {userInfo.lastname}

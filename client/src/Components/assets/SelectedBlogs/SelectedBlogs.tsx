@@ -38,12 +38,16 @@ const SelectedBlogs = ({
 
   const thisYear = new Date().getFullYear();
   const BlogDate = (b: BlogDate) => {
-    const minute = b.releaseDate.split("T")[1].split(":")[1];
-    const hour = b.releaseDate.split("T")[1].split(":")[0];
-
     const day = b.releaseDate.split("T")[0].split("-")[2];
     const mounth = parseInt(b.releaseDate.split("T")[0].split("-")[1]);
     const year = parseInt(b.releaseDate.split("T")[0].split("-")[0]);
+    let minute;
+    let hour;
+
+    if (year == thisYear) {
+      minute = b.releaseDate.split("T")[1].split(":")[1];
+      hour = b.releaseDate.split("T")[1].split(":")[0];
+    }
 
     const mounthName = [
       "January",
@@ -114,7 +118,13 @@ const SelectedBlogs = ({
           );
           return (
             <div key={b.id} className="blog">
-              <div className="info flex">
+              <div
+                className="info flex"
+                style={{
+                  borderRadius:
+                    blogImages.length > 0 ? "1rem 1rem 0 0" : "1rem",
+                }}
+              >
                 <div className="flex author">
                   <div className="flex">
                     <div className="avatar flex">
@@ -154,24 +164,28 @@ const SelectedBlogs = ({
                 </div>
               </div>
 
-              <div className="img flex">
-                <Carousel
-                  autoPlay
-                  infiniteLoop
-                  dynamicHeight
-                  showThumbs={false}
-                >
-                  {blogImages.map((img, index) => (
-                    <div key={index}>
-                      <img
-                        className="blogImage"
-                        src={`/blogs/${img.name}`}
-                        alt={b.title}
-                      />
-                    </div>
-                  ))}
-                </Carousel>
-              </div>
+              {blogImages.length > 0 ? (
+                <div className="img flex">
+                  <Carousel
+                    autoPlay
+                    infiniteLoop
+                    dynamicHeight
+                    showThumbs={false}
+                  >
+                    {blogImages.map((img, index) => (
+                      <div key={index}>
+                        <img
+                          className="blogImage"
+                          src={`/blogs/${img.name}`}
+                          alt={b.title}
+                        />
+                      </div>
+                    ))}
+                  </Carousel>
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
           );
         })

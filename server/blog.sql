@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mer. 22 mai 2024 à 02:51
+-- Généré le : mer. 22 mai 2024 à 15:19
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -43,9 +43,10 @@ CREATE TABLE `blog` (
 
 INSERT INTO `blog` (`id`, `title`, `text`, `idUser`, `tag`, `releaseDate`, `idCategory`) VALUES
 (1, 'a new tree', 'See this new tree', 7, 'tree; natural;', '2024-04-03 23:21:00', 4),
+(37, 'This is a TITLE sport', 'test about sport', 1, 'lorem, sport;', '2024-05-09 14:14:59', 1),
 (2, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 1, 'Maes; Boom Bap; Kick; Old School;', '2022-07-26 00:00:00', 3),
 (3, 'New record sport', 'New world record in sport', 10, '500m; record;', '2022-07-29 00:00:00', 1),
-(4, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 11, 'Khali; Josman; New Wave; Trap;', '2022-08-03 00:00:00', 1),
+(4, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 11, '1', '2022-08-03 00:00:00', 0),
 (5, 'Animal', 'See this animal', 7, 'animal; nature;', '2022-08-25 00:00:00', 4),
 (6, 'NATURE', 'natural blog', 10, 'tree; apple; leaf;', '2022-08-19 00:00:00', 4),
 (7, 'SEE PANORAMA', 'See a beautiful panorama', 10, 'panorama; nature;', '2022-08-26 00:00:00', 4),
@@ -74,7 +75,7 @@ INSERT INTO `blog` (`id`, `title`, `text`, `idUser`, `tag`, `releaseDate`, `idCa
 (28, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 10, 'AAMO; Leo SVR; New Wave;', '2023-11-26 00:00:00', 6),
 (29, 'WWWWWWWWWWWWWWWWWWWWWWW', 'TEEST OVERFLOW\n\n\nsdddddddddddddddddddddddddddddddfqseeeggggggggggggggggggggggggggggggggggggggggggggggg', 11, 'test;', '2023-12-09 00:00:00', 3),
 (30, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 1, 'AAMO; Leo SVR; New Wave;', '2023-12-21 00:00:00', 6),
-(31, 'This is a TITLE', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 1, 'Khali; Kosei; New Wave;', '2024-03-22 09:08:00', 1),
+(31, 'natural sport', 'sport & nature', 1, 'sport; nature; natural;', '2024-03-22 09:08:00', 1),
 (32, 'New picture', 'New picture of nature', 7, 'picture; photo; natural;', '2024-04-17 14:29:10', 4),
 (34, 'Nouveau blog', 'Voici un nouveau blog\n\n8a643f51-253e-c407-9b21-fb9423575c9f-images.jfif\n', 7, 'blog;', '2024-05-20 13:09:32', 1);
 
@@ -100,34 +101,47 @@ INSERT INTO `blogimg` (`id`, `idBlog`, `name`) VALUES
 (3, 1, 'imageGeneratorFeatureIntro1-AQU1zYPO.webp'),
 (4, 32, 'téléchargement (4).jfif'),
 (5, 1, 'file-6113d5f8845dc.jpeg'),
-(6, 1, 'sunset-1373171_1280.jpg'),
+(6, 1, 'sunset-1373171_128017.jpg'),
 (7, 28, 'imageGeneratorFeatureIntro1-AQU1zYPO.webp'),
-(8, 2, 'téléchargement.jfif'),
 (9, 3, 'sunset-1373171_1280.jpg'),
 (10, 4, 'imageGeneratorFeatureIntro1-AQU1zYPO.webp'),
-(11, 5, 'téléchargement.jfif'),
 (12, 6, 'téléchargement (2).jfif'),
-(13, 7, 'sunset-1373171_1280.jpg'),
-(14, 8, 'file-6113d5f8845dc.jpeg'),
+(13, 7, 'sunset-1373171_128014.jpg'),
+(14, 8, 'file-6113d5f8845dcs.jpeg'),
 (15, 9, 'carré.avif'),
 (16, 10, 'imageGeneratorFeatureIntro1-AQU1zYPO.webp'),
-(17, 10, 'téléchargement.jfif'),
 (18, 11, 'carré.avif'),
 (19, 12, 'téléchargement (2).jfif'),
 (20, 27, 'téléchargement (4).jfif'),
 (21, 28, 'carré.avif'),
 (22, 31, 'téléchargement (1).jfif'),
 (23, 31, 'photo.avif'),
-(24, 31, 'téléchargement (2).jfif'),
 (34, 5, 'téléchargement (4).jfif'),
 (35, 27, 'carré.avif'),
-(36, 35, '42ae3c59-406c-02cc-e53d-091399ef5d94-images.jfif'),
 (37, 36, 'dbad0b08-c299-a4a4-22d3-4b2af3ce54ae-imagesdfsesegsd.jpg'),
-(38, 36, '2a070850-aa66-6363-872e-147127b6c4da-imagesdfsesegsd.jpg'),
 (39, 36, '19381ed9-0e39-1543-0c95-8c63bf19456a-imagesdfsesegsd.jpg'),
 (40, 36, '176fee5a-853f-4428-b8d3-3b85d3d8eecb-imagesdfsesegsd.jpg'),
 (41, 36, 'ea560319-168b-2411-5cfe-8f9d85d970a7-imagesdfsesegsd.jpg'),
-(46, 34, '91e7db11-1acd-307f-74ec-f719aca29832-images.jfif');
+(48, 34, 'bf2a5093-6b64-353b-1da1-fe751b6090ef-imagesdfsesegsd.jpg'),
+(49, 34, 'e6680980-8677-23c8-068c-9afaf2a2ab8f-img-worlds-of-adventure.jpg'),
+(50, 34, 'ff169572-aa0a-ff59-1b20-e0f77d133267-images.jfif'),
+(51, 32, 'a9017001-6087-86c2-a446-1a3636007af8-images (2).jfif'),
+(52, 32, '74e01134-8055-46a0-bdf9-7c1ab2c9bcfb-images.jpg'),
+(53, 12, '4a64ccf5-7509-313b-1a01-ef76810b82a4-images.jpg'),
+(54, 12, '294cca85-3d19-90fc-3af3-9080ec6b0a2c-images (2).jfif'),
+(55, 12, 'e5dab55e-91be-d444-b945-6256f128ad0d-images (1).jfif'),
+(56, 11, '04285a34-d43f-c96d-6fd5-71241327b8a6-images (2).jfif'),
+(57, 11, '19005fe9-ee75-573b-b5e6-129bcd440239-images (1).jfif'),
+(58, 8, '45a5762e-92f4-6cd8-3c24-457a1e2d348a-images.jfif'),
+(59, 11, '217af364-942a-6a89-7980-39330be1bf63-images.jfif'),
+(60, 2, 'a60c195f-c5c5-f260-9dfc-14558d367fe2-images.jpg'),
+(61, 2, '9d93784d-260a-680f-cbf9-f2d458f850dd-images.jpg'),
+(62, 10, '4e346475-5572-cc89-994c-929ffe57678b-images (1).jfif'),
+(63, 2, '652e3d99-7b75-745b-5103-45a82504efbd-images.jpg'),
+(64, 2, 'c46df0f8-cfa1-bd04-ae95-eba0c140a272-images (2).jfif'),
+(67, 37, 'c251e5da-18eb-43ab-3fce-65f99fffaee2-images.jfif'),
+(68, 37, '9e0832ce-9b4e-4dcd-4f05-7a3a140aaaba-download.jpg'),
+(69, 31, '24d3e129-7941-50c1-e8f9-20b7789977b4-download.jpg');
 
 -- --------------------------------------------------------
 
@@ -327,13 +341,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT pour la table `blog`
 --
 ALTER TABLE `blog`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT pour la table `blogimg`
 --
 ALTER TABLE `blogimg`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT pour la table `category`

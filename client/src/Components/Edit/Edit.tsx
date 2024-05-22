@@ -82,14 +82,14 @@ const Edit = ({ userInfo }: { userInfo: UserInfo }) => {
                 </tr>
               </thead>
               <tbody>
-                {myBlogs.map((b) => (
-                  <tr key={b.id}>
+                {myBlogs.map((b, index) => (
+                  <tr key={index}>
                     <th scope="row">{b.id}</th>
                     <td>{b.title}</td>
                     <td>{b.text}</td>
                     <td className="tags">
-                      {b.tag.split("; ").map((tag) => (
-                        <p key={tag.replace(";", "")}>{tag.replace(";", "")}</p>
+                      {b.tag.split("; ").map((tag, index) => (
+                        <p key={index}>{tag.replace(";", "")}</p>
                       ))}
                     </td>
                     <td>{b.category}</td>
@@ -98,8 +98,8 @@ const Edit = ({ userInfo }: { userInfo: UserInfo }) => {
                         <Carousel>
                           {myBlogsImg
                             .filter((bi) => b.id === bi.idBlog)
-                            .map((bi) => (
-                              <div key={bi.id}>
+                            .map((bi, index) => (
+                              <div key={index}>
                                 <img
                                   src={`/blogs/${bi.name}`}
                                   alt="Image of blog"

@@ -9,6 +9,9 @@ interface BlogDate {
   releaseDate: string;
 }
 
+interface BImg {
+  name: string;
+}
 interface EditProps {
   myBlogs: BlogInfo[];
   myBlogsImg: BlogImage[];
@@ -17,13 +20,7 @@ interface EditProps {
   setEdit: Dispatch<SetStateAction<boolean>>;
 }
 
-const Edit: React.FC<EditProps> = ({
-  myBlogs,
-  myBlogsImg,
-  idEdit,
-  setIdEdit,
-  setEdit,
-}) => {
+const Edit: React.FC<EditProps> = ({ myBlogs, idEdit, setIdEdit, setEdit }) => {
   const navigateTo = useNavigate();
 
   const [category, setCategs] = useState<Category[]>([]);
@@ -47,21 +44,34 @@ const Edit: React.FC<EditProps> = ({
   const [file4, setFile4] = useState<File | null>(null);
   const [file5, setFile5] = useState<File | null>(null);
 
-  const [imagePreview1, setPreview1] = useState<string | undefined>(
-    myBlogsImg[0] ? `/blogs/${myBlogsImg[0].name}` : undefined
-  );
-  const [imagePreview2, setPreview2] = useState<string | undefined>(
-    myBlogsImg[1] ? `/blogs/${myBlogsImg[1].name}` : undefined
-  );
-  const [imagePreview3, setPreview3] = useState<string | undefined>(
-    myBlogsImg[2] ? `/blogs/${myBlogsImg[2].name}` : undefined
-  );
-  const [imagePreview4, setPreview4] = useState<string | undefined>(
-    myBlogsImg[3] ? `/blogs/${myBlogsImg[3].name}` : undefined
-  );
-  const [imagePreview5, setPreview5] = useState<string | undefined>(
-    myBlogsImg[4] ? `/blogs/${myBlogsImg[4].name}` : undefined
-  );
+  const [imagePreview1, setPreview1] = useState<string | undefined>(undefined);
+  const [imagePreview2, setPreview2] = useState<string | undefined>(undefined);
+  const [imagePreview3, setPreview3] = useState<string | undefined>(undefined);
+  const [imagePreview4, setPreview4] = useState<string | undefined>(undefined);
+  const [imagePreview5, setPreview5] = useState<string | undefined>(undefined);
+
+  const [bImg, setbImg] = useState<BImg[]>([]);
+  useEffect(() => {
+    if (!newBlog.id) {
+      return;
+    }
+
+    fetch(`http://localhost:8081/reqimg/${newBlog.id}`)
+      .then((response) => response.json())
+      .then((results) => {
+        if (Array.isArray(results)) {
+          setbImg(results);
+          setPreview1(results[0] ? `/blogs/${results[0].name}` : undefined);
+          setPreview2(results[1] ? `/blogs/${results[1].name}` : undefined);
+          setPreview3(results[2] ? `/blogs/${results[2].name}` : undefined);
+          setPreview4(results[3] ? `/blogs/${results[3].name}` : undefined);
+          setPreview5(results[4] ? `/blogs/${results[4].name}` : undefined);
+        }
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la récupération des données :", error);
+      });
+  }, [newBlog.id]);
 
   useEffect(() => {
     const fetchTypeBeat = async () => {
@@ -119,28 +129,51 @@ const Edit: React.FC<EditProps> = ({
     const formData = new FormData();
     formData.append("newBlog", JSON.stringify(newBlog));
 
+    const imgDel = [];
+
     if (file1) {
       formData.append("image", file1);
-      if (file2) {
-        formData.append("image", file2);
-        if (file3) {
-          formData.append("image", file3);
-          if (file4) {
-            formData.append("image", file4);
-            if (file5) {
-              formData.append("image", file5);
-            }
-          }
-        }
+      if (bImg[0]) {
+        imgDel.push(bImg[0].name);
       }
+    }
+    if (file2) {
+      formData.append("image", file2);
+      if (bImg[1]) {
+        imgDel.push(bImg[1].name);
+      }
+    }
+    if (file3) {
+      formData.append("image", file3);
+      if (bImg[2]) {
+        imgDel.push(bImg[2].name);
+      }
+    }
+    if (file4) {
+      formData.append("image", file4);
+      if (bImg[3]) {
+        imgDel.push(bImg[3].name);
+      }
+    }
+    if (file5) {
+      formData.append("image", file5);
+      if (bImg[4]) {
+        imgDel.push(bImg[4].name);
+      }
+    }
+
+    formData.append("imgDel", JSON.stringify(imgDel));
+
+    for (const value of formData.values()) {
+      console.log(value);
     }
 
     try {
       await axios.post(`http://localhost:8081/updateblog/${idEdit}`, formData);
-      window.location.reload();
     } catch (error) {
       console.error("Error:", error);
     }
+    window.location.reload();
   };
 
   const handleClose = () => {
@@ -187,13 +220,24 @@ const Edit: React.FC<EditProps> = ({
 
   return (
     <div className="editBlog">
-      <button className="btn" onClick={() => console.log(myBlogsImg)}>
-        text
-      </button>
+      {/* <button
+        className="btn"
+        onClick={() => console.log(bImg)}
+        style={{ translate: "0 3rem" }}
+      >
+        bImg
+      </button> */}
+      {/* <button className="btn" onClick={() => console.log(imagePreview1)}>
+        imagePreview1
+      </button>  */}
       <button className="btn close" onClick={handleClose}>
         <IconX size={50} />
       </button>
-      <form className="exemple" onSubmit={handleSubmit}>
+      <form
+        className="exemple"
+        onSubmit={handleSubmit}
+        encType="multipart/form-data"
+      >
         <div className="thisBlog">
           <div className="blogContent">
             <div className="flex head">
@@ -213,7 +257,11 @@ const Edit: React.FC<EditProps> = ({
                 <span>Category : </span>
                 <select name="idCategory" required onChange={handleChange}>
                   {category.map((c) => (
-                    <option value={c.id} selected={c.id == newBlog.idCategory}>
+                    <option
+                      key={c.id}
+                      value={c.id}
+                      selected={c.id == newBlog.idCategory}
+                    >
                       {c.name}
                     </option>
                   ))}
@@ -293,7 +341,10 @@ const Edit: React.FC<EditProps> = ({
                   className="input-file"
                   onChange={(e) => handleImageChange(e, setFile1, setPreview1)}
                 />
-                <label htmlFor="file2" className={imagePreview1 ? "" : "disabled"}>
+                <label
+                  htmlFor="file2"
+                  className={imagePreview1 ? "" : "disabled"}
+                >
                   {imagePreview2 ? "Change" : "Choose"} the second Image
                 </label>
                 <input
@@ -303,7 +354,10 @@ const Edit: React.FC<EditProps> = ({
                   className="input-file"
                   onChange={(e) => handleImageChange(e, setFile2, setPreview2)}
                 />
-                <label htmlFor="file3" className={imagePreview2 ? "" : "disabled"}>
+                <label
+                  htmlFor="file3"
+                  className={imagePreview2 ? "" : "disabled"}
+                >
                   {imagePreview3 ? "Change" : "Choose"} the third Image
                 </label>
                 <input
@@ -313,7 +367,10 @@ const Edit: React.FC<EditProps> = ({
                   className="input-file"
                   onChange={(e) => handleImageChange(e, setFile3, setPreview3)}
                 />
-                <label htmlFor="file4" className={imagePreview3 ? "" : "disabled"}>
+                <label
+                  htmlFor="file4"
+                  className={imagePreview3 ? "" : "disabled"}
+                >
                   {imagePreview4 ? "Change" : "Choose"} the fourth Image
                 </label>
                 <input
@@ -323,7 +380,10 @@ const Edit: React.FC<EditProps> = ({
                   className="input-file"
                   onChange={(e) => handleImageChange(e, setFile4, setPreview4)}
                 />
-                <label htmlFor="file5" className={imagePreview4 ? "" : "disabled"}>
+                <label
+                  htmlFor="file5"
+                  className={imagePreview4 ? "" : "disabled"}
+                >
                   {imagePreview5 ? "Change" : "Choose"} the fifth Image
                 </label>
                 <input

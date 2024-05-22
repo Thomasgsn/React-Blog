@@ -3,10 +3,11 @@
 
   .goBack {
     position: absolute;
-    top: 34px;
+    top: 3rem;
     left: -10px;
     width: 150px !important;
     scale: 0.65;
+    font-size: var(--h3FontSize);
 
     .icn {
       margin-right: 0.5rem;

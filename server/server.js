@@ -279,6 +279,14 @@ app.get("/reqfollow/:user", (req, res) => {
     });
   });
 });
+app.get("/reqimg/:blog", (req, res) => {
+  const blogId = req.params.blog;
+  const SQL = "SELECT name FROM blogimg WHERE idBlog = ?";
+  db.query(SQL, [blogId], (err, result) => {
+    if (err) return res.json(errBlogs);
+    return res.json(result);
+  });
+});
 // REQ
 
 // HOME
@@ -675,71 +683,96 @@ app.delete("/blog/:id", (req, res) => {
 app.get("/editblog", (req, res) => {
   const blog = req.query.blog;
   const SQL = `SELECT b.*, u.username, u.id as idUser, u.avatar, c.name as category FROM blog b JOIN user u ON u.id = b.idUser JOIN category c ON c.id = b.idCategory WHERE b.id = ?`;
-  const SQLimg = `SELECT * FROM blogimg bi JOIN blog b ON b.id = bi.idBlog WHERE b.id = ?`;
 
   db.query(SQL, [blog], (errBlogs, myblog) => {
-    db.query(SQLimg, [blog], (errImage, myblogsImages) => {
-      if (errBlogs) return res.json(errBlogs);
-      if (errImage) return res.json(errImage);
+    if (errBlogs) return res.json(errBlogs);
 
-      const result = {
-        myblogs: myblog,
-        myblogsImages: myblogsImages,
-      };
-      return res.json(result);
-    });
+    const result = {
+      myblogs: myblog,
+    };
+    return res.json(result);
   });
 });
 // EDIT BLOG
 app.post("/updateblog/:id", uploadBlog.array("image", 5), async (req, res) => {
-  const b = JSON.parse(req.body.newBlog);
   const id = req.params.id;
-  const files = req.files;
+  const b = JSON.parse(req.body.newBlog);
+  const imgDel = req.body.imgDel ? JSON.parse(req.body.imgDel) : null;
+  const files = req.files ? req.files : null;
 
-  const message = "Blog successfully updated !";
+  if (b) {
+    const SQLBlogs =
+      "UPDATE blog SET title = ?, text = ?, tag = ?, idCategory = ? WHERE blog.id = ?";
+    const ValuesBlog = [b.title, b.text, b.tag, b.idCategory, id];
 
-  const SQL = `UPDATE blog SET title = ?, text = ?, tag = ?, idCategory = ? WHERE blog.id = ?`;
-  const Values = [b.title, b.text, b.tag, b.idCategory, id];
+    db.query(SQLBlogs, ValuesBlog, (err, results) => {
+      if (err) console.error(err);
+      console.log(`Blog ${id} is updated`);
+    });
+  } else {
+    console.log("Error in updating blog");
+  }
 
-  try {
-    if (files && files.length > 0) {
-      const existingImages = await db.query(
-        "SELECT name FROM blogimg WHERE idBlog = ?",
-        [id]
-      );
-      const replacedImages = existingImages.filter((existingImage) => {
-        return !newImages.some(
-          (newImage) => newImage.filename === existingImage.name
-        );
+  const sqlAdd = (e) => {
+    const SQL =
+      "INSERT INTO `blogimg` (`id`, `idBlog`, `name`) VALUES (null, ?, ?)";
+    const Values = [id, e];
+    db.query(SQL, Values, (err, results) => {
+      if (err) console.error(err);
+      console.log(`Image ${e} of blog ${id} is added`);
+    });
+  };
+
+  const sqlDelete = (e) => {
+    const SQL = "DELETE FROM `blogimg` WHERE idBlog = ? AND name= ?";
+    const Values = [id, e];
+    db.query(SQL, Values, (err, results) => {
+      if (err) console.error(err);
+      fs.unlink(path.join(blogDir, e), (unlinkErr) => {
+        if (unlinkErr) console.log(unlinkErr);
       });
+      console.log(`Image ${e} of blog ${id} is deleted`);
+    });
+  };
 
-      // replacedImages.forEach((replacedImage) => {
-      //   fs.unlink(path.join(blogDir, replacedImage), (unlinkErr) => {
-      //     if (unlinkErr) console.log(unlinkErr);
-      //   });
-      // });
+  if (files[0]) {
+    sqlAdd(files[0].filename);
 
-      await db.query("DELETE FROM blogimg WHERE idBlog = ?", [id]);
-
-      if (filteredFiles.length > 0) {
-        const SQLImage =
-          "INSERT INTO `blogimg` (`id`, `idBlog`, `name`) VALUES ?";
-        const ValuesImage = filteredFiles.map((file) => [
-          null,
-          id,
-          file.filename,
-        ]);
-        await db.query(SQLImage, [ValuesImage]);
-      }
+    if (imgDel[0]) {
+      sqlDelete(imgDel[0]);
     }
+  }
 
-    await db.query(SQL, Values);
+  if (files[1]) {
+    sqlAdd(files[1].filename);
 
-    console.log(message);
-    res.status(200).json(message);
-  } catch (error) {
-    console.error("Error updating blog:", error);
-    res.status(500).send("An error occurred while updating the blog.");
+    if (imgDel[1]) {
+      sqlDelete(imgDel[1]);
+    }
+  }
+
+  if (files[2]) {
+    sqlAdd(files[2].filename);
+
+    if (imgDel[2]) {
+      sqlDelete(imgDel[2]);
+    }
+  }
+
+  if (files[3]) {
+    sqlAdd(files[3].filename);
+
+    if (imgDel[3]) {
+      sqlDelete(imgDel[3]);
+    }
+  }
+
+  if (files[4]) {
+    sqlAdd(files[4].filename);
+
+    if (imgDel[4]) {
+      sqlDelete(imgDel[4]);
+    }
   }
 });
 // END EDIT BLOG
